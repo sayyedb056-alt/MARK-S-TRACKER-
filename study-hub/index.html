@@ -210,6 +210,12 @@ main{padding:10px 16px 18px}.screen{animation:fadeIn .18s ease}.screen:not(.acti
  #revision .revisionEmpty{padding:19px 13px;}
 }
 </style>
+<link rel="manifest" href="./manifest.json">
+<meta name="theme-color" content="#f7f8fc">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Bilal Study Hub">
+<link rel="apple-touch-icon" href="./icon-192.png">
 </head>
 <body>
 <div class="app">
@@ -545,6 +551,13 @@ document.addEventListener("DOMContentLoaded",()=>{
   const emojiObserver=new MutationObserver(()=>sanitizeEmojiUI(document.body));
   emojiObserver.observe(document.body,{childList:true,subtree:true});
 });
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js', {scope: './'}).catch(() => {});
+  });
+}
 </script>
 </body>
 </html>
