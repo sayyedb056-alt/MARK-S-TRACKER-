@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#6d35e8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="CE5K Tracker">
+<link rel="manifest" href="manifest.json">
+<title>CE5K Target Marks Tracker</title>
+<style>
+:root{
+  --bg:#f6f4ff; --card:#fff; --text:#171526; --muted:#77758a;
+  --primary:#6337e8; --primary2:#8a49f4; --soft:#eee9ff;
+  --green:#16a36a; --red:#e05252; --line:#ebe8f4;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+background:linear-gradient(180deg,#f7f5ff 0,#f2f0fb 100%);color:var(--text)}
+.app{max-width:620px;margin:auto;padding:14px 14px 34px}
+.hero{background:linear-gradient(135deg,#5730d9,#8143ee);color:#fff;border-radius:24px;padding:20px;
+box-shadow:0 12px 30px #5d35d933}
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:1.1px;opacity:.85}
+h1{font-size:25px;margin:3px 0 5px}.sub{font-size:13px;opacity:.82}
+.score{display:flex;align-items:end;justify-content:space-between;margin-top:20px}
+.score .big{font-size:39px;font-weight:900;line-height:1}.score small{font-size:12px;opacity:.8}
+.progress{height:9px;background:#ffffff30;border-radius:20px;overflow:hidden;margin:17px 0 12px}
+.progress>div{height:100%;background:#fff;border-radius:20px;transition:.3s}
+.stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.stat{background:#ffffff18;border-radius:13px;padding:10px}.stat b{display:block;font-size:17px}.stat span{font-size:10px;opacity:.8}
+.notice{margin:12px 2px;font-size:12px;color:var(--muted)}
+.subject{background:var(--card);border:1px solid var(--line);border-radius:19px;padding:15px;margin:12px 0;
+box-shadow:0 5px 15px #2a185008}
+.subject-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.name{font-weight:850;font-size:15px;line-height:1.15}.code{font-size:11px;color:var(--muted);font-weight:600}
+.target{font-size:11px;color:var(--muted);text-align:right;white-space:nowrap}.target b{display:block;color:var(--text);font-size:14px}
+.inputs{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-top:13px}
+.field label{display:block;font-size:9px;color:var(--muted);font-weight:750;margin:0 0 5px 2px}
+.field input{width:100%;border:1px solid #e2dfed;background:#faf9fd;border-radius:12px;padding:11px 9px;
+font-size:16px;font-weight:700;outline:none;text-align:center}
+.field input:focus{border-color:var(--primary);box-shadow:0 0 0 3px #6337e815}
+.max{font-size:9px;color:#aaa;text-align:center;margin-top:3px}
+.total{display:flex;justify-content:space-between;align-items:center;margin-top:13px;padding-top:11px;border-top:1px solid var(--line)}
+.total b{font-size:16px}.gap{font-size:10px;padding:5px 8px;border-radius:9px;background:var(--soft);color:var(--primary);font-weight:800}
+.gap.good{background:#e7f8f0;color:var(--green)}.gap.bad{background:#fff0f0;color:var(--red)}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:15px}
+button{border:0;border-radius:13px;padding:12px;font-weight:850;font-size:13px;cursor:pointer}
+.save{background:var(--primary);color:#fff}.reset{background:#fff;border:1px solid var(--line);color:var(--text)}
+.footer{text-align:center;color:#999;font-size:10px;margin-top:14px}
+@media(min-width:700px){.app{padding-top:28px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <section class="hero">
+    <div class="eyebrow">CE5K • 5TH SEMESTER</div>
+    <h1>🎯 Target Marks Tracker</h1>
+    <div class="sub">Sirf actual marks dalo — baaki calculation automatic.</div>
+    <div class="score"><div><div class="big" id="score">0 / 900</div><small id="percent">0.00% • Target 864 / 900 (96%)</small></div></div>
+    <div class="progress"><div id="bar" style="width:0%"></div></div>
+    <div class="stats">
+      <div class="stat"><b id="toTarget">864</b><span>marks to target</span></div>
+      <div class="stat"><b id="targetGap">−864</b><span>target gap</span></div>
+      <div class="stat"><b id="filled">0/21</b><span>components filled</span></div>
+    </div>
+  </section>
+
+  <div class="notice">🟡 Input limit = actual maximum marks. Target is your goal, not a limit. You can enter any valid mark up to the component maximum.</div>
+  <main id="subjects"></main>
+
+  <div class="actions">
+    <button class="save" onclick="saveData()">💾 Save Progress</button>
+    <button class="reset" onclick="resetData()">↻ Reset</button>
+  </div>
+  <div class="footer">Autosaves on every change • Data stays on this device • No login required</div>
+</div>
+
+<script>
+const subjects=[
+ {name:"Theory of Structure",code:"TOS",target:118,max:125,parts:[["FA-TH",30],["SA-TH",70],["SA-PR",25]]},
+ {name:"Water Resource Engineering",code:"WRE",target:167,max:175,parts:[["FA-TH",30],["SA-TH",70],["FA-PR",50],["SA-PR",25]]},
+ {name:"Emerging Trends in Civil Engg.",code:"ETC",target:96,max:100,parts:[["FA-TH",30],["SA-TH",70]]},
+ {name:"Entrepreneurship Development",code:"ENDS",target:72,max:75,parts:[["FA-PR",50],["SA-PR",25]]},
+ {name:"Seminar & Project Initiation",code:"SPI",target:72,max:75,parts:[["FA-PR",25],["SA-PR",25],["Other",25]]},
+ {name:"Internship (12 Weeks)",code:"ITR",target:197,max:200,parts:[["FA-PR",100],["SA-PR",100]]},
+ {name:"Road Traffic Engineering",code:"TEN",target:142,max:150,parts:[["FA-TH",30],["SA-TH",70],["FA-PR",25],["SA-PR",25]]}
+];
+const grandMax=900, grandTarget=864;
+
+function esc(s){return s.replace(/"/g,'&quot;')}
+function render(){
+ const root=document.getElementById("subjects");
+ root.innerHTML=subjects.map((s,i)=>`
+ <section class="subject">
+   <div class="subject-head">
+     <div class="name">${s.name} <span class="code">(${s.code})</span></div>
+     <div class="target">Target<b>${s.target}/${s.max}</b></div>
+   </div>
+   <div class="inputs">
+    ${s.parts.map((p,j)=>`<div class="field">
+      <label>${p[0]}</label>
+      <input inputmode="numeric" type="number" min="0" max="${p[1]}" step="1"
+       data-i="${i}" data-j="${j}" placeholder="—" aria-label="${esc(p[0])}">
+      <div class="max">/ ${p[1]}</div>
+    </div>`).join("")}
+   </div>
+   <div class="total"><b>Actual total <span id="sub-${i}">0</span> / ${s.max}</b><span class="gap" id="gap-${i}">Target gap</span></div>
+ </section>`).join("");
+ document.querySelectorAll("input").forEach(el=>el.addEventListener("input",update));
+ loadData(); update();
+}
+function values(){
+ return [...document.querySelectorAll("input")].map(x=>x.value);
+}
+function update(){
+ let total=0,filled=0;
+ subjects.forEach((s,i)=>{
+   let st=0;
+   s.parts.forEach((p,j)=>{
+     const el=document.querySelector(`[data-i="${i}"][data-j="${j}"]`);
+     let v=el.value===""?0:Number(el.value);
+     if(v<0)v=0;if(v>p[1]){v=p[1];el.value=v}
+     if(el.value!=="")filled++;
+     st+=v;
+   });
+   total+=st;
+   document.getElementById("sub-"+i).textContent=st;
+   const g=document.getElementById("gap-"+i);
+   const gap=s.target-st;
+   g.textContent=gap>0?`Need ${gap}`:gap===0?"Target reached":`+${Math.abs(gap)} above`;
+   g.className="gap "+(gap<=0?"good":"");
+ });
+ const pct=(total/grandMax)*100;
+ const need=Math.max(0,grandTarget-total);
+ document.getElementById("score").textContent=`${total} / ${grandMax}`;
+ document.getElementById("percent").textContent=`${pct.toFixed(2)}% • Target ${grandTarget} / ${grandMax} (96%)`;
+ document.getElementById("bar").style.width=Math.min(100,pct)+"%";
+ document.getElementById("toTarget").textContent=need;
+ document.getElementById("targetGap").textContent=(total-grandTarget>=0?"+":"−")+Math.abs(total-grandTarget);
+ document.getElementById("filled").textContent=`${filled}/21`;
+ localStorage.setItem("ce5k_tracker",JSON.stringify(values()));
+}
+function saveData(){update(); alert("Progress saved on this device ✅");}
+function resetData(){
+ if(confirm("Saare entered marks reset karne hain?")){
+   document.querySelectorAll("input").forEach(x=>x.value="");
+   localStorage.removeItem("ce5k_tracker"); update();
+ }
+}
+function loadData(){
+ try{
+  const a=JSON.parse(localStorage.getItem("ce5k_tracker")||"[]");
+  document.querySelectorAll("input").forEach((x,i)=>{if(a[i]!==undefined)x.value=a[i]});
+ }catch(e){}
+}
+render();
+if("serviceWorker" in navigator) window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js"));
+</script>
+</body>
+</html>

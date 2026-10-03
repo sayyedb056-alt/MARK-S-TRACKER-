@@ -1,0 +1,12 @@
+{
+  "name": "CE5K Target Marks Tracker",
+  "short_name": "CE5K Tracker",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f6f4ff",
+  "theme_color": "#6d35e8",
+  "description": "Automatic CE5K 5th semester target marks tracker.",
+  "icons": [
+    {"src":"icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}
+  ]
+}
