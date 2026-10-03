@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f7f8fc">
+<title>Bilal Study Hub v20 • Navigation Fixed</title>
+<style>
+:root{--bg:#f7f8fc;--card:#fff;--text:#17202b;--muted:#717b89;--line:#e6eaf0;--blue:#3b82f6;--blue2:#eaf2ff;--green:#16a34a;--red:#dc3545;--shadow:0 7px 25px rgba(28,43,64,.08)}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg)}body{color:var(--text);font-family:Georgia,serif}.app{max-width:760px;margin:auto;min-height:100vh;padding-bottom:88px}
+header{padding:20px 17px 12px;position:sticky;top:0;z-index:10;background:rgba(247,248,252,.95);backdrop-filter:blur(12px)}
+.top{display:flex;justify-content:space-between;align-items:center}.brand{font-size:25px;font-weight:800}.sub{font-size:13px;color:var(--muted);margin-top:3px}
+button{font:inherit;cursor:pointer}.icon{border:0;background:#fff;border-radius:14px;width:43px;height:43px;box-shadow:var(--shadow);font-size:21px}
+main{padding:8px 15px}.screen{display:none!important}.screen.active{display:block!important}.screen.homeScreen.active{display:flex!important}
+.hero{padding:20px;border-radius:24px;background:linear-gradient(135deg,#e9f2ff,#fff);border:1px solid #dce9ff;box-shadow:var(--shadow);margin-bottom:17px}.hero h1{margin:0 0 7px;font-size:24px}.hero p{margin:0;color:var(--muted);line-height:1.45}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.tile{border:1px solid var(--line);background:#fff;border-radius:20px;padding:17px;text-align:left;min-height:115px;box-shadow:var(--shadow)}.emoji{font-size:28px;display:block;margin-bottom:12px}.tile b{display:block;font-size:16px}.tile small{display:block;color:var(--muted);margin-top:4px}
+.section{display:flex;justify-content:space-between;align-items:center;margin:20px 2px 10px}.section h2{font-size:19px;margin:0}.primary,.secondary,.danger{border-radius:13px;padding:10px 14px;font-weight:800}.primary{background:var(--blue);color:#fff;border:0}.secondary{background:#fff;border:1px solid var(--line)}.danger{background:#fff;border:1px solid #f0c8cc;color:var(--red)}
+.card,.item{background:#fff;border:1px solid var(--line);border-radius:19px;padding:16px;box-shadow:var(--shadow)}.list{display:flex;flex-direction:column;gap:10px}
+.statgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.stat{text-align:center}.stat strong{display:block;font-size:23px}.stat span{font-size:12px;color:var(--muted)}
+.progress{height:9px;background:#edf0f4;border-radius:99px;overflow:hidden}.progress i{display:block;height:100%;background:var(--blue);border-radius:99px}.muted{color:var(--muted)}
+.bottom{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.97);border-top:1px solid var(--line);z-index:30}.nav{max-width:760px;margin:auto;display:grid;grid-template-columns:repeat(5,1fr);padding:6px 8px calc(6px + env(safe-area-inset-bottom))}.nav button{border:0;background:none;color:#7a8491;font-size:11px;padding:5px}.nav b{display:block;font-size:20px;margin-bottom:2px}.nav button.active{color:var(--blue);font-weight:800}
+.tabs{display:flex;gap:8px;overflow:auto;padding-bottom:3px;margin-bottom:12px}.tab{white-space:nowrap;border:1px solid var(--line);background:#fff;padding:9px 14px;border-radius:99px;font-weight:800}.tab.active{background:var(--blue);border-color:var(--blue);color:#fff}
+.unit{display:flex;align-items:center;gap:15px}.unitIcon{width:55px;height:55px;border-radius:17px;background:var(--blue2);display:grid;place-items:center;font-size:27px}.unit h3{margin:0 0 4px;font-size:19px}.unit p{margin:0;color:var(--muted);font-size:12px}
+.seat{display:flex;align-items:center;gap:13px}.seatIcon{width:47px;height:47px;border-radius:14px;background:#f1f4f8;display:grid;place-items:center;font-size:24px}.seatInfo{flex:1}.seatInfo b{display:block}.seatInfo small{color:var(--muted)}.arrow{font-size:22px;color:#9aa3ae}
+.qcard{padding:18px}.qnum{font-size:13px;color:var(--blue);font-weight:800}.question{font-size:20px;font-weight:800;line-height:1.4;margin:9px 0 15px}.option{width:100%;text-align:left;border:1px solid var(--line);background:#fff;border-radius:14px;padding:13px;margin:7px 0}.option.correct{border-color:var(--green);background:#ebf8ef}.option.wrong{border-color:var(--red);background:#fff0f1}.feedback{padding:12px;border-radius:13px;background:#f5f7fa;margin-top:10px;font-size:13px}
+.actions{display:flex;gap:9px;margin-top:15px}.actions>*{flex:1}
+.search{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:14px;background:#fff;margin-bottom:10px}.upload{padding:22px;border:2px dashed #cbd5e1;border-radius:18px;text-align:center}.upload span{display:block;color:var(--muted);font-size:13px;margin-top:4px}input[type=file]{display:none}
+.file{display:flex;align-items:center;gap:12px}.thumb{width:52px;height:52px;border-radius:13px;background:#eef2f6;display:grid;place-items:center;font-size:25px}.fileInfo{flex:1;min-width:0}.fileInfo b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.fileInfo small{color:var(--muted)}
+.empty{text-align:center;padding:30px;color:var(--muted)}.center{text-align:center}.big{font-size:50px;font-weight:900}
+.modal{display:none;position:fixed;inset:0;background:rgba(20,28,40,.42);z-index:50;align-items:flex-end}.modal.show{display:flex}.sheet{width:100%;max-width:760px;margin:auto;background:#fff;border-radius:25px 25px 0 0;padding:20px;max-height:90vh;overflow:auto}.sheet h2{margin:0 0 17px}.field{margin:12px 0}.field label{display:block;font-weight:800;font-size:13px;margin-bottom:6px}.field input,.field textarea,.field select{width:100%;border:1px solid var(--line);border-radius:13px;padding:12px;background:#fff}.field textarea{min-height:150px}.toast{position:fixed;bottom:86px;left:50%;transform:translate(-50%,20px);background:#17202b;color:#fff;padding:11px 15px;border-radius:12px;opacity:0;z-index:90;transition:.2s;font-size:13px}.toast.show{opacity:1;transform:translate(-50%,0)}
+.noteBadge{display:inline-block;background:var(--blue2);color:var(--blue);border-radius:99px;padding:5px 9px;font-size:11px;font-weight:800}.saveState{font-size:12px;color:var(--muted)}.settingsHead{margin-bottom:16px}.settingsHead h2{margin:3px 0 2px;font-size:25px;display:flex;align-items:center;gap:7px}.settingsHead h2 .iconSvg{width:24px;height:24px}.settingsSub{margin:0;font-size:12px;line-height:1.45}.settingsList{display:grid;gap:10px}.settingRow{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:var(--shadow)}.settingIcon{width:42px;height:42px;flex:0 0 42px;border-radius:13px;background:var(--blue2);color:var(--blue);display:grid;place-items:center}.settingIcon .iconSvg{width:21px;height:21px}.settingInfo{flex:1;min-width:0}.settingInfo b{display:block;font-size:14px}.settingInfo small{display:block;color:var(--muted);font-size:11px;line-height:1.35;margin-top:3px}.switch{width:46px;height:27px;border:0;border-radius:99px;background:#d8dde5;padding:3px;flex:0 0 46px}.switch span{display:block;width:21px;height:21px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.16);transition:.18s}.switch.on{background:var(--blue)}.switch.on span{transform:translateX(19px)}.settingsBlock{margin-top:16px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:7px 12px;box-shadow:var(--shadow)}.settingsBlockTitle{font-size:12px;font-weight:900;color:var(--muted);padding:7px 3px}.settingAction{width:100%;display:flex;align-items:center;gap:11px;text-align:left;border:0;border-top:1px solid #eef0f3;background:none;padding:13px 3px;color:var(--text)}.settingActionIcon{width:35px;height:35px;display:grid;place-items:center;border-radius:11px;background:#f1f5fa;color:var(--blue);flex:0 0 35px}.settingActionIcon .iconSvg{width:18px;height:18px}.settingAction span:nth-child(2){flex:1}.settingAction b{display:block;font-size:13px}.settingAction small{display:block;color:var(--muted);font-size:10px;line-height:1.3;margin-top:2px}.dangerAction .settingActionIcon{color:var(--red);background:#fff0f1}.settingsAbout{display:flex;align-items:center;gap:10px;margin-top:12px;padding:12px 4px}.settingsAbout>span:first-child{width:35px;height:35px;display:grid;place-items:center;border-radius:11px;background:#f1f5fa;color:var(--blue)}.settingsAbout b{display:block;font-size:13px}.settingsAbout small{display:block;color:var(--muted);font-size:10px;margin-top:2px}.settingsAbout .version{margin-left:auto;font-size:10px;color:var(--muted);font-weight:800}
+@media(min-width:600px){.grid{grid-template-columns:repeat(3,1fr)}}
+
+
+.calScreenTop{display:flex;align-items:center;gap:10px;margin:4px 0 10px}
+.calScreenTop h2{margin:0;font-size:20px}
+.calMonthBar{display:flex;align-items:center;gap:8px;margin:8px 0}
+.calMonthBar .monthTitle{font-size:21px;font-weight:900;flex:1;text-align:center}
+.calMonthBar .icon{box-shadow:none;border:1px solid var(--line);width:40px;height:40px}
+.calToday{border:1px solid var(--line);background:#fff;border-radius:999px;padding:9px 13px;font-weight:800}
+.calTools{display:flex;gap:7px;margin:0 0 10px;overflow:auto}
+.calTools select{border:1px solid var(--line);background:#fff;border-radius:999px;padding:9px 12px;font-weight:800;min-width:108px}
+.countdownBar{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:0 0 13px}
+.cdMini{min-width:0;border:1px solid var(--line);background:#fff;border-radius:15px;padding:10px 9px;text-align:left;box-shadow:0 3px 10px rgba(28,43,64,.06)}
+.cdMini .cdTitle{font-size:11px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cdMini .cdDays{font-size:19px;font-weight:900;margin-top:3px;white-space:nowrap}
+.cdMini .cdDate{font-size:9px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cdMini.today .cdDays{color:var(--red)}
+.cdMini:nth-child(1){background:#fff8f0}.cdMini:nth-child(2){background:#f3f8ff}.cdMini:nth-child(3){background:#fff4f5}
+.calendarShell{background:#fff;border:1px solid var(--line);border-radius:17px;overflow:hidden;box-shadow:0 3px 14px rgba(28,43,64,.05)}
+.calGrid{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;background:var(--line)}
+.calDow{background:#fff;text-align:center;color:var(--muted);font-size:10px;font-weight:900;padding:8px 2px}
+.calDay{min-width:0;height:82px;border:0;background:#fff;border-radius:0;padding:5px 4px;position:relative;text-align:left;box-shadow:none;overflow:hidden}
+.calDay.out{background:#fafbfc;color:#aeb5bf}
+.calDay.today{background:#f4f8ff}
+.dayNum{font-size:12px;font-weight:900;display:inline-grid;place-items:center;min-width:26px;height:26px}
+.calDay.today .dayNum{background:var(--blue);color:#fff;border-radius:50%}
+.eventChip{display:block;margin-top:3px;border-radius:6px;padding:3px 4px;font-size:8px;font-weight:900;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.eventMore{font-size:8px;color:var(--muted);font-weight:800;margin-top:2px}
+.cat-exam{background:#ffe5e7;color:#a61b2b}.cat-test{background:#fff0df;color:#9a5200}.cat-study{background:#e8f1ff;color:#1856a5}.cat-college{background:#e4f7ef;color:#14724c}.cat-assignment{background:#eee8ff;color:#5b3ca8}.cat-submission{background:#fff7cf;color:#7b5b00}.cat-personal{background:#e9f7f7;color:#17727a}.cat-other{background:#edf0f4;color:#4b5563}
+.calendarBelow{display:flex;justify-content:space-between;align-items:center;margin:12px 2px 0}
+.calendarBelow button{border:0;background:none;color:var(--blue);font-weight:900;padding:7px}
+.eventDetail{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.eventDetail>div:first-child{min-width:0;flex:1}.eventActions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.eventActions>*{flex:1;min-width:110px}.calendarEmpty{padding:20px;text-align:center;color:var(--muted)}
+.eventCountdown{display:inline-block;margin-top:8px;padding:5px 9px;border-radius:999px;background:#eef5ff;color:#1d63c8;font-size:12px;font-weight:900}
+.allEventCard .eventCountdown{font-size:13px}
+
+
+/* Compact home dashboard: intentionally fits in one viewport without page scrolling */
+html,body{height:100%;overflow:hidden}
+.app{height:100dvh;min-height:100dvh;overflow:hidden;padding-bottom:76px}
+main{height:calc(100dvh - 82px - 76px);overflow:hidden;padding:8px 16px 10px}
+.screen{height:100%;overflow:auto}.homeLocked{overflow:hidden}.homeLocked main{overflow:hidden}.homeLocked .app{height:100dvh;min-height:100dvh;overflow:hidden}.homeLocked .homeScreen{height:100%;min-height:0;overflow:hidden}.homeScreen{overflow:hidden;flex-direction:column;justify-content:flex-start;gap:0}.screen.homeScreen.active{display:flex}
+.homeHero{flex:0 0 auto;min-height:86px;padding:14px 17px;border-radius:20px;background:linear-gradient(135deg,#eaf3ff 0%,#fff 78%);border:1px solid #dbe8fb;box-shadow:var(--shadow);margin:2px 0 10px;position:relative;overflow:hidden;display:flex;align-items:center}
+.homeHero:after{content:"";position:absolute;width:115px;height:115px;border-radius:50%;right:-45px;top:-55px;background:rgba(52,127,240,.07)}
+.homeEyebrow{font-family:Arial,sans-serif;font-size:8px;letter-spacing:1.25px;font-weight:800;color:var(--blue);margin-bottom:3px;position:relative;z-index:1}
+.homeHero h1{margin:0;display:flex;align-items:center;gap:6px;font-size:25px;line-height:1.05;position:relative;z-index:1}.homeHero h1 .iconSvg{width:22px;height:22px}
+.homeHero p{margin:4px 0 0;max-width:420px;color:var(--muted);font-size:10.5px;line-height:1.35;position:relative;z-index:1}
+.homeSectionTitle{display:flex;align-items:center;justify-content:space-between;margin:5px 2px 7px}.homeSectionTitle span{font-size:17px;font-weight:900}.homeSectionTitle small{font-family:Arial,sans-serif;font-size:9px;color:var(--muted);font-weight:700}
+.homeSubjects{gap:7px;margin-bottom:8px}.homeSubjects .subjectTile{min-height:67px;height:67px;padding:9px 28px 9px 10px;border-radius:16px;display:flex;align-items:center;gap:9px}.homeSubjects .folderEmoji{width:35px;height:35px;flex:0 0 35px;margin:0;border-radius:11px}.homeSubjects .folderEmoji .iconSvg{width:19px;height:19px}.subjectCopy{min-width:0;display:block}.subjectCopy b{font-size:15px;line-height:1}.subjectCopy small{font-size:8.5px;line-height:1.2;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0}.subjectArrow{position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:20px;color:#a2acb8}.quickTitle{margin-top:2px}.homeQuick{gap:7px}.homeQuick .tile{min-height:74px;height:74px;padding:10px 11px;border-radius:16px;display:flex;align-items:center;gap:10px}.homeQuick .tile .emoji{width:35px;height:35px;flex:0 0 35px;margin:0;border-radius:11px;background:#f1f5fa;display:grid;place-items:center}.homeQuick .tile .emoji .iconSvg{width:19px;height:19px}.homeQuick .tile b{font-size:13px;line-height:1.1}.homeQuick .tile small{font-size:8.5px;line-height:1.2;margin-top:3px}.homeQuick .tile>span:last-child{min-width:0}
+@media(max-width:390px){main{padding-left:12px;padding-right:12px}.homeHero{min-height:82px;padding:12px 14px}.homeHero h1{font-size:23px}.homeHero p{font-size:10px}.homeSubjects{gap:6px}.homeSubjects .subjectTile{height:63px;min-height:63px;padding:8px}.homeSubjects .folderEmoji{width:32px;height:32px;flex-basis:32px}.subjectCopy b{font-size:14px}.subjectCopy small{font-size:8px}.homeQuick{gap:6px}.homeQuick .tile{height:69px;min-height:69px;padding:8px}.homeQuick .tile .emoji{width:32px;height:32px;flex-basis:32px}.homeQuick .tile b{font-size:12px}.homeQuick .tile small{font-size:8px}}
+@media(max-width:390px){.countdownBar{gap:6px}.cdMini{padding:9px 7px}.cdMini .cdDays{font-size:17px}.calDay{height:76px;padding:4px 3px}.eventChip{font-size:7.5px}}
+
+
+.iconSvg{width:22px;height:22px;display:inline-block;vertical-align:-5px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.navIcon{width:23px;height:23px;vertical-align:-6px}
+.btnIcon{width:18px;height:18px;vertical-align:-4px}
+.iconOnly{display:inline-flex;align-items:center;justify-content:center}
+
+.svgEmoji{display:inline-flex;align-items:center;justify-content:center;width:1.15em;height:1.15em;vertical-align:-.18em;margin-right:.12em}
+.svgEmoji .iconSvg{width:1em;height:1em;stroke-width:1.9}
+.emoji{display:inline-flex;align-items:center;justify-content:center}
+.emoji .iconSvg{width:1.15em;height:1.15em}
+
+/* ===== v13 visual refinement ===== */
+:root{
+  --bg:#f5f7fb;--card:#ffffff;--text:#18202c;--muted:#7b8491;--line:#e4e8ef;
+  --blue:#347ff0;--blue2:#edf4ff;--blue3:#dbe9ff;--green:#18a567;--red:#df4b55;
+  --shadow:0 8px 28px rgba(24,36,58,.07);--shadow2:0 3px 12px rgba(24,36,58,.06)
+}
+html{background:var(--bg)}
+body{background:var(--bg);color:var(--text);font-family:Georgia,"Times New Roman",serif;-webkit-font-smoothing:antialiased}
+.app{max-width:560px;padding-bottom:92px}
+header{padding:18px 18px 10px;background:rgba(245,247,251,.94);border-bottom:1px solid rgba(228,232,239,.65)}
+.brand{font-size:25px;letter-spacing:-.3px;display:flex;align-items:center;gap:8px}.brand .iconSvg{width:25px;height:25px}
+.sub{font-size:12px;margin-left:33px;color:var(--muted);letter-spacing:.15px}
+.icon{width:45px;height:45px;border-radius:16px;box-shadow:var(--shadow2);border:1px solid rgba(228,232,239,.9);color:var(--text)}
+main{padding:10px 16px 18px}.screen{animation:fadeIn .18s ease}.screen:not(.active){animation:none}
+@keyframes fadeIn{from{opacity:.65;transform:translateY(3px)}to{opacity:1;transform:none}}
+.hero{padding:22px 20px;border-radius:24px;background:linear-gradient(145deg,#eaf3ff 0%,#fff 75%);border:1px solid #dbe8fb;box-shadow:var(--shadow);margin:7px 0 20px;position:relative;overflow:hidden}.hero:after{content:"";position:absolute;width:130px;height:130px;border-radius:50%;right:-55px;top:-55px;background:rgba(52,127,240,.07)}.hero h1{font-size:26px;line-height:1.1;position:relative;z-index:1}.hero p{font-size:14px;line-height:1.5;max-width:410px;position:relative;z-index:1}
+.section{margin:20px 2px 11px}.section h2{font-size:20px;line-height:1.2;display:flex;align-items:center;gap:7px}.sectionIcon{display:inline-flex;color:var(--blue);font-size:0;align-items:center}.sectionIcon .svgEmoji{margin:0}.sectionIcon .iconSvg{width:18px;height:18px}
+.subjectGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.subjectTile{appearance:none;-webkit-appearance:none;border:1px solid var(--line);background:var(--card);border-radius:20px;padding:15px;text-align:left;min-height:112px;box-shadow:var(--shadow2);position:relative;overflow:hidden;color:var(--text);transition:transform .15s ease,box-shadow .15s ease,border-color .15s ease}.subjectTile:active,.tile:active,.item:active{transform:scale(.985)}.subjectTile:hover,.tile:hover{border-color:#cddcf4;box-shadow:var(--shadow)}.subjectTile:after{content:"›";position:absolute;right:12px;top:13px;color:#a2acb8;font-size:22px}.folderEmoji{width:39px;height:39px;border-radius:13px;background:var(--blue2);color:var(--blue);display:grid;place-items:center;margin-bottom:11px}.folderEmoji .iconSvg{width:21px;height:21px}.subjectTile b{display:block;font-size:17px;line-height:1.1}.subjectTile small{display:block;color:var(--muted);font-size:11px;line-height:1.3;margin-top:4px;padding-right:15px}
+.grid{gap:11px}.tile{min-height:132px;padding:17px;border-radius:20px;border:1px solid var(--line);box-shadow:var(--shadow2);transition:.15s}.tile .emoji{width:38px;height:38px;border-radius:12px;background:#f1f5fa;color:var(--blue);margin-bottom:14px}.tile .emoji .iconSvg{width:22px;height:22px}.tile b{font-size:16px}.tile small{font-size:11px;line-height:1.35}
+.card,.item{border-radius:20px;box-shadow:var(--shadow2);border:1px solid var(--line);background:#fff}.card{padding:17px}.item{padding:15px}.primary{background:var(--blue);border:0;border-radius:14px;padding:11px 15px;box-shadow:0 6px 16px rgba(52,127,240,.18);font-size:14px}.secondary{border:1px solid var(--line);background:#fff;border-radius:14px;padding:10px 13px;color:var(--text);font-size:14px}.danger{border-radius:14px}.muted{color:var(--muted)}
+.pageHead{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:9px 2px 15px}.pageHead h2{margin:2px 0 2px;font-size:25px;display:flex;align-items:center;gap:7px}.pageHead h2 .iconSvg{width:23px;height:23px}.pageHead p{margin:0;font-size:12px}.eyebrow{font-family:Arial,sans-serif;font-size:9px;letter-spacing:1.4px;font-weight:800;color:var(--blue)}.startBtn{min-width:88px;height:45px}.revisionIntro{display:flex;align-items:flex-start;gap:13px;background:linear-gradient(135deg,#f8fbff,#fff);border-color:#dfe9f8;margin-bottom:18px}.introIcon{flex:0 0 42px;width:42px;height:42px;border-radius:13px;background:var(--blue2);color:var(--blue);display:grid;place-items:center}.introIcon .iconSvg{width:22px;height:22px}.revisionGroup{padding:16px}.revisionTop{display:flex;align-items:center;justify-content:space-between;gap:10px}.revisionTop>div{min-width:0}.revisionTop b{display:block;font-size:15px;line-height:1.25}.revisionTop small{display:block;color:var(--muted);font-size:11px;margin-top:4px}.revisionQuestions{margin-top:13px;border-top:1px solid #edf0f4;padding-top:10px;display:grid;gap:7px;font-size:13px;line-height:1.35}.revisionQuestions>div{position:relative;padding-left:18px}.revisionQuestions>div:before{content:"";position:absolute;left:0;top:.45em;width:7px;height:7px;border-radius:50%;background:#e4a1a6}.revisionQuestions .muted{padding-left:0}.revisionQuestions .muted:before{display:none}
+.daysLeft{display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;border-radius:999px;padding:7px 10px;background:#eef5ff;color:#1e64c5;font-size:12px;font-weight:900;min-width:78px}.daysLeft.today{background:#fff0f0;color:var(--red)}
+.countdownBar{gap:9px;margin-bottom:15px}.cdMini{border-radius:17px;padding:11px 10px;min-height:79px;box-shadow:var(--shadow2);border:1px solid var(--line);background:#fff}.cdMini .cdTitle{font-size:10px;color:#687383;letter-spacing:.1px}.cdMini .cdDays{font-size:18px;line-height:1.15;margin-top:5px}.cdMini .cdDate{font-size:9px;margin-top:4px}.cdMini:nth-child(1){background:#fff}.cdMini:nth-child(2){background:#fff}.cdMini:nth-child(3){background:#fff}
+.calScreenTop{margin:3px 0 12px}.calScreenTop h2{font-size:22px;display:flex;align-items:center;gap:6px}.calMonthBar{margin:12px 0 9px}.calMonthBar .monthTitle{font-size:23px}.calMonthBar .icon{background:#fff}.calTools{margin-bottom:12px}.calToday,.calTools select{font-size:12px;padding:9px 12px}.calendarShell{border-radius:19px;box-shadow:var(--shadow2)}.calDow{font-size:10px;padding:9px 2px;background:#fbfcfe}.calDay{height:76px;padding:5px}.dayNum{font-size:11px;min-width:24px;height:24px}.eventChip{font-size:7.5px;padding:3px 4px;border-radius:7px}.calendarBelow{margin-top:11px}.calendarBelow button{font-size:12px}
+.bottom{background:rgba(255,255,255,.98);border-top:1px solid #e1e5ec;box-shadow:0 -5px 18px rgba(24,36,58,.05)}.nav{max-width:560px;padding:7px 8px calc(7px + env(safe-area-inset-bottom))}.nav button{font-family:Georgia,"Times New Roman",serif;font-size:10px;padding:4px 3px;border-radius:12px}.nav b{display:flex;align-items:center;justify-content:center;height:25px;font-size:0;margin-bottom:3px}.nav b .iconSvg{width:21px;height:21px}.nav button.active{background:#eef4ff;color:var(--blue)}
+.quizHead{display:flex;align-items:center;gap:10px;margin:7px 0 14px}.quizTitle{font-size:18px;font-weight:900}.quizMeta{font-size:11px;color:var(--muted);margin-top:3px}.qcard{padding:18px}.question{font-size:18px;line-height:1.42}.option{border-radius:15px;padding:13px;font-size:14px}.feedback{border-radius:14px}
+.file,.eventDetail{min-height:66px}.thumb{width:44px;height:44px;border-radius:13px;background:#f0f4f8;color:var(--blue)}
+.sheet{border-radius:27px 27px 0 0;padding:21px 18px;box-shadow:0 -8px 35px rgba(15,23,42,.12)}.sheet h2{font-size:23px}.modal{background:rgba(22,31,44,.38)}
+@media(max-width:390px){main{padding-left:13px;padding-right:13px}.subjectGrid{gap:9px}.subjectTile{min-height:108px;padding:13px}.grid{gap:9px}.tile{min-height:126px;padding:15px}.countdownBar{gap:6px}.cdMini{padding:9px 7px}.cdMini .cdDays{font-size:16px}.calDay{height:70px}.eventChip{font-size:7px}.pageHead h2{font-size:23px}.startBtn{min-width:78px}}
+.settingsHead{margin-bottom:16px}.settingsHead h2{margin:3px 0 2px;font-size:25px;display:flex;align-items:center;gap:7px}.settingsHead h2 .iconSvg{width:24px;height:24px}.settingsSub{margin:0;font-size:12px;line-height:1.45}.settingsList{display:grid;gap:10px}.settingRow{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:var(--shadow)}.settingIcon{width:42px;height:42px;flex:0 0 42px;border-radius:13px;background:var(--blue2);color:var(--blue);display:grid;place-items:center}.settingIcon .iconSvg{width:21px;height:21px}.settingInfo{flex:1;min-width:0}.settingInfo b{display:block;font-size:14px}.settingInfo small{display:block;color:var(--muted);font-size:11px;line-height:1.35;margin-top:3px}.switch{width:46px;height:27px;border:0;border-radius:99px;background:#d8dde5;padding:3px;flex:0 0 46px}.switch span{display:block;width:21px;height:21px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.16);transition:.18s}.switch.on{background:var(--blue)}.switch.on span{transform:translateX(19px)}.settingsBlock{margin-top:16px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:7px 12px;box-shadow:var(--shadow)}.settingsBlockTitle{font-size:12px;font-weight:900;color:var(--muted);padding:7px 3px}.settingAction{width:100%;display:flex;align-items:center;gap:11px;text-align:left;border:0;border-top:1px solid #eef0f3;background:none;padding:13px 3px;color:var(--text)}.settingActionIcon{width:35px;height:35px;display:grid;place-items:center;border-radius:11px;background:#f1f5fa;color:var(--blue);flex:0 0 35px}.settingActionIcon .iconSvg{width:18px;height:18px}.settingAction span:nth-child(2){flex:1}.settingAction b{display:block;font-size:13px}.settingAction small{display:block;color:var(--muted);font-size:10px;line-height:1.3;margin-top:2px}.dangerAction .settingActionIcon{color:var(--red);background:#fff0f1}.settingsAbout{display:flex;align-items:center;gap:10px;margin-top:12px;padding:12px 4px}.settingsAbout>span:first-child{width:35px;height:35px;display:grid;place-items:center;border-radius:11px;background:#f1f5fa;color:var(--blue)}.settingsAbout b{display:block;font-size:13px}.settingsAbout small{display:block;color:var(--muted);font-size:10px;margin-top:2px}.settingsAbout .version{margin-left:auto;font-size:10px;color:var(--muted);font-weight:800}
+@media(min-width:600px){.app{max-width:760px}.nav{max-width:760px}.subjectGrid{grid-template-columns:repeat(4,1fr)}.subjectTile{min-height:126px}.grid{grid-template-columns:repeat(4,1fr)}.tile{min-height:145px}}
+
+/* ===== v16 balanced home dashboard ===== */
+.screen.homeScreen{display:none;flex-direction:column;overflow:hidden;padding-bottom:0}
+.homeScreen .homeHero{min-height:72px;height:72px;margin:2px 0 8px;padding:10px 15px;border-radius:19px;box-shadow:0 5px 18px rgba(24,36,58,.055)}
+.homeEyebrow{font-size:7.5px;letter-spacing:1.1px;margin-bottom:2px}
+.homeHero h1{font-size:22px;gap:5px;line-height:1}
+.homeHero h1 .iconSvg{width:19px;height:19px}
+.homeHero p{font-size:9.5px;line-height:1.25;margin-top:3px;max-width:390px}
+.homeSectionTitle{height:25px;margin:4px 2px 5px;align-items:center}
+.homeSectionTitle span{font-size:16px;line-height:1}
+.homeSectionTitle small{display:none}
+.homeSubjects{gap:6px;margin-bottom:6px}
+.homeSubjects .subjectTile{height:60px;min-height:60px;padding:7px 30px 7px 9px;border-radius:15px;gap:8px;box-shadow:0 4px 14px rgba(24,36,58,.055)}
+.homeSubjects .folderEmoji{width:31px;height:31px;flex-basis:31px;border-radius:10px;margin:0}
+.homeSubjects .folderEmoji .iconSvg{width:17px;height:17px}
+.subjectCopy b{font-size:14px;line-height:1.05}
+.subjectCopy small{font-size:7.8px;line-height:1.15;margin-top:3px}
+.subjectArrow{right:9px;width:21px;height:21px;border-radius:50%;background:#f4f7fb;display:grid;place-items:center;font-size:17px;line-height:1;color:#8d98a6}
+.quickTitle{margin-top:2px}
+.homeQuick{gap:6px}
+.homeQuick .tile{height:62px;min-height:62px;padding:8px 10px;border-radius:15px;gap:9px;box-shadow:0 4px 14px rgba(24,36,58,.055)}
+.homeQuick .tile .emoji{width:31px;height:31px;flex-basis:31px;border-radius:10px;margin:0}
+.homeQuick .tile .emoji .iconSvg{width:18px;height:18px}
+.homeQuick .tile b{font-size:12.5px;line-height:1.05}
+.homeQuick .tile small{font-size:7.8px;line-height:1.15;margin-top:3px}
+.homeQuick .tile>span:last-child{min-width:0}
+.homeScreen:after{content:"";flex:1;min-height:4px}
+@media(max-width:390px){
+  main{padding:7px 12px 8px}
+  .homeScreen .homeHero{height:69px;min-height:69px;padding:9px 13px;margin-bottom:6px}
+  .homeHero h1{font-size:21px}
+  .homeHero p{font-size:9px}
+  .homeSectionTitle{height:23px;margin:3px 1px 4px}
+  .homeSectionTitle span{font-size:15px}
+  .homeSubjects{gap:5px;margin-bottom:5px}
+  .homeSubjects .subjectTile{height:56px;min-height:56px;padding:6px 28px 6px 8px;gap:7px}
+  .homeSubjects .folderEmoji{width:29px;height:29px;flex-basis:29px}
+  .subjectCopy b{font-size:13px}
+  .subjectCopy small{font-size:7.2px}
+  .homeQuick{gap:5px}
+  .homeQuick .tile{height:58px;min-height:58px;padding:7px 8px;gap:8px}
+  .homeQuick .tile .emoji{width:29px;height:29px;flex-basis:29px}
+  .homeQuick .tile b{font-size:11.5px}
+  .homeQuick .tile small{font-size:7.2px}
+}
+
+/* ===== Revision page clean refinement ===== */
+#revision{padding:2px 0 14px;}
+#revision .pageHead{margin:5px 2px 13px;align-items:center;}
+#revision .pageHead h2{font-size:24px;line-height:1.05;letter-spacing:-.2px;gap:7px;margin:2px 0 3px;}
+#revision .pageHead h2 .iconSvg{width:22px;height:22px;}
+#revision .pageHead p{font-size:11px;line-height:1.3;margin:0;}
+#revision .eyebrow{font-size:8px;letter-spacing:1.5px;margin-bottom:2px;}
+#revision .startBtn{height:43px;min-width:92px;padding:9px 13px;border-radius:14px;font-size:13px;}
+#revision .revisionIntro{margin:0 0 16px;padding:14px 15px;gap:11px;border-radius:18px;box-shadow:0 5px 18px rgba(24,36,58,.055);}
+#revision .introIcon{width:38px;height:38px;flex-basis:38px;border-radius:11px;}
+#revision .introIcon .iconSvg{width:20px;height:20px;}
+#revision .revisionIntro b{font-size:14px;line-height:1.2;display:block;}
+#revision .revisionIntro p{font-size:11px;line-height:1.4;margin:4px 0 0!important;}
+#revision .section{margin:15px 2px 8px;}
+#revision .section h2{font-size:18px;line-height:1.15;gap:6px;}
+#revision .section h2 .iconSvg{width:19px;height:19px;}
+#revisionList{display:grid;gap:9px;}
+#revision .revisionGroup{padding:13px 14px;border-radius:17px;box-shadow:0 4px 15px rgba(24,36,58,.055);}
+#revision .revisionTop b{font-size:14px;}
+#revision .revisionTop small{font-size:10px;margin-top:3px;}
+#revision .revisionTop .primary{padding:8px 11px;border-radius:11px;font-size:11px;box-shadow:none;}
+#revision .revisionQuestions{margin-top:10px;padding-top:9px;gap:6px;font-size:11px;line-height:1.3;}
+#revision .revisionQuestions>div{padding-left:15px;}
+#revision .revisionQuestions>div:before{width:5px;height:5px;top:.5em;}
+#revision .revisionQuestions .muted{font-size:10px;}
+#revision .revisionEmpty{padding:22px 16px;border-radius:18px;text-align:center;box-shadow:0 4px 16px rgba(24,36,58,.05);}
+#revision .revisionEmptyIcon{width:46px;height:46px;margin:0 auto 10px;border-radius:14px;background:var(--blue2);color:var(--blue);display:grid;place-items:center;}
+#revision .revisionEmptyIcon .iconSvg{width:24px;height:24px;}
+#revision .revisionEmpty b{display:block;font-size:15px;line-height:1.25;margin-bottom:5px;}
+#revision .revisionEmpty p{margin:0 auto;color:var(--muted);font-size:11px;line-height:1.45;max-width:310px;}
+@media(max-width:390px){
+ #revision .pageHead h2{font-size:22px;}
+ #revision .pageHead p{font-size:10px;}
+ #revision .startBtn{min-width:84px;height:41px;padding:8px 10px;font-size:12px;}
+ #revision .revisionIntro{padding:12px 13px;margin-bottom:13px;}
+ #revision .revisionIntro b{font-size:13px;}
+ #revision .revisionIntro p{font-size:10px;}
+ #revision .section{margin-top:13px;}
+ #revision .section h2{font-size:17px;}
+ #revision .revisionEmpty{padding:19px 13px;}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<header><div class="top"><div><div class="brand"><svg class="iconSvg" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v17H6.5A2.5 2.5 0 0 0 4 21z"/><path d="M4 4.5V21M8 6h8M8 10h8"/></svg> Bilal Study Hub</div><div class="sub">CE5K • MCQ Notebook + Revision</div></div><button class="icon" onclick="settings()"><svg class="iconSvg" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.2 3.5h5.6l.7 2.1 1.8 1.1 2.1-.7 2.8 4.8-1.5 1.5v2.1l1.5 1.5-2.8 4.8-2.1-.7-1.8 1.1-.7 2.1H9.2l-.7-2.1-1.8-1.1-2.1.7-2.8-4.8 1.5-1.5v-2.1L1.8 10.8l2.8-4.8 2.1.7 1.8-1.1z"/><circle cx="12" cy="13" r="3.2"/></svg></button></div></header>
+<main>
+<section id="home" class="screen active homeScreen">
+<div class="homeHero"><div><div class="homeEyebrow">CE5K • STUDY DASHBOARD</div><h1>CE5K <svg class="iconSvg" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v17H6.5A2.5 2.5 0 0 0 4 21z"/><path d="M4 4.5V21M8 6h8M8 10h8"/></svg></h1><p>Four major subjects, revision, notes and your study tools in one place.</p></div></div>
+<div class="homeSectionTitle"><span>Major Subjects</span><small>4 subjects</small></div>
+<div class="subjectGrid homeSubjects">
+<button class="subjectTile" onclick="openSubject('WRE')"><span class="folderEmoji"><svg class="iconSvg" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 6.5h6l2 2h9v10.5h-17z"/><path d="M3.5 6.5V5h7l2 2"/></svg></span><span class="subjectCopy"><b>WRE</b><small>Water Resource Engineering</small></span><span class="subjectArrow">›</span></button>
+<button class="subjectTile" onclick="openSubject('TOS')"><span class="folderEmoji"><svg class="iconSvg" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 6.5h6l2 2h9v10.5h-17z"/><path d="M3.5 6.5V5h7l2 2"/></svg></span><span class="subjectCopy"><b>TOS</b><small>Theory of Structure</small></span><span class="subjectArrow">›</span></button>
+<button class="subjectTile" onclick="openSubject('TEN')"><span class="folderEmoji"><svg class="iconSvg" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 6.5h6l2 2h9v10.5h-17z"/><path d="M3.5 6.5V5h7l2 2"/></svg></span><span class="subjectCopy"><b>TEN</b><small>Road Traffic Engineering</small></span><span class="subjectArrow">›</span></button>
+<button class="subjectTile" onclick="openSubject('ETC')"><span class="folderEmoji"><svg class="iconSvg" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 6.5h6l2 2h9v10.5h-17z"/><path d="M3.5 6.5V5h7l2 2"/></svg></span><span class="subjectCopy"><b>ETC</b><small>Emerging Trends in Civil Engineering</small></span><span class="subjectArrow">›</span></button>
+</div>
+<div class="homeSectionTitle quickTitle"><span>Quick Access</span><small>Tools</small></div>
+<div class="grid homeQuick">
+<button class="tile" onclick="show('calendar')"><span class="emoji"><svg class="iconSvg" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="16" rx="2.5"/><path d="M7 3v4M17 3v4M3.5 9h17"/><path d="M8 13h2M14 13h2M8 17h2M14 17h2"/></svg></span><span><b>Calendar</b><small>Events & countdowns</small></span></button>
+<button class="tile" onclick="show('revision')"><span class="emoji"><svg class="iconSvg" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 8a8 8 0 0 0-14.7-2L3 9"/><path d="M3 4v5h5"/><path d="M4 16a8 8 0 0 0 14.7 2L21 15"/><path d="M21 20v-5h-5"/></svg></span><span><b>Revision</b><small id="homeRevisionCount">0 pending MCQs</small></span></button>
+<button class="tile" onclick="show('files')"><span class="emoji"><svg class="iconSvg" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3.5h10l4 4V21H5z"/><path d="M15 3.5V8h4M8 12h8M8 16h6"/><path d="m15.5 17.5 3-3 2 2-3 3-2.5.5z"/></svg></span><span><b>Notes & Files</b><small>Saved study material</small></span></button>
+<button class="tile" onclick="openMarksTracker()"><span class="emoji"><svg class="iconSvg" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20V10M12 20V5M19 20V8"/><path d="M3 20h18"/></svg></span><span><b>Marks Tracker</b><small>CE5K target & marks</small></span></button>
+</div>
+</section>
+<section id="calendar" class="screen">
+<div class="calScreenTop">
+  <button class="secondary" onclick="show('home')"><svg class="iconSvg btnIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="m14.5 5-7 7 7 7"/><path d="M8 12h12"/></svg></button>
+  <div style="flex:1"><h2 style="margin:0"><svg class="iconSvg navIcon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="16" rx="2.5"/><path d="M7 3v4M17 3v4M3.5 9h17"/><path d="M8 13h2M14 13h2M8 17h2M14 17h2"/></svg> Calendar</h2><div class="muted" style="font-size:11px;margin-top:2px">CE5K • Events & Countdowns</div></div>
+  <button class="primary" onclick="openEventForm()">＋</button>
+</div>
+<div class="section" style="margin-top:10px;margin-bottom:6px;display:flex;align-items:center">
+  <h2 style="font-size:15px;margin:0;flex:1">Upcoming <span class="muted">(Countdowns)</span></h2>
+  <button class="secondary" style="padding:7px 10px;font-size:11px" onclick="openAllCountdowns()">View All ›</button>
+</div>
+<div class="countdownBar" id="countdownBar"></div>
+<div class="calMonthBar">
+  <button class="icon" onclick="changeCalendarMonth(-1)" aria-label="Previous month">‹</button>
+  <div class="monthTitle" id="calMonthTitle">October 2026</div>
+  <button class="icon" onclick="changeCalendarMonth(1)" aria-label="Next month">›</button>
+</div>
+<div class="calTools">
+  <button class="calToday" onclick="goCalendarToday()">Today</button>
+  <select id="calMonthSelect" onchange="jumpCalendar()" aria-label="Month"></select>
+  <select id="calYearSelect" onchange="jumpCalendar()" aria-label="Year"></select>
+</div>
+<div class="calendarShell"><div id="calendarGrid"></div></div>
+<div id="eventList" style="display:none"></div>
+<div class="calendarBelow">
+  <span class="muted" style="font-size:12px">Tap a date to view events</span>
+  <button onclick="openAllEvents()">All events ›</button>
+</div>
+</section>
+<section id="subject" class="screen">
+<div class="section"><button class="secondary" onclick="show('home')"><svg class="iconSvg btnIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="m14.5 5-7 7 7 7"/><path d="M8 12h12"/></svg> Home</button><h2 id="subjectTitle">Subject</h2></div>
+<div id="subjectContent"></div>
+</section>
+<section id="notebook" class="screen">
+<div class="section"><h2><svg class="iconSvg navIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v17H6.5A2.5 2.5 0 0 0 4 21z"/><path d="M4 4.5V21M8 6h8M8 10h8"/></svg> MCQ Notebook</h2><button class="primary" onclick="openImport()">＋ Import Seat</button></div>
+<div class="card" style="margin-bottom:12px"><b><svg class="iconSvg" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v17H6.5A2.5 2.5 0 0 0 4 21z"/><path d="M4 4.5V21M8 6h8M8 10h8"/></svg> ETC</b><div class="muted" style="font-size:13px;margin-top:4px">MCQ Notebook is currently connected to ETC. Other subjects can be connected later.</div></div>
+<div id="units"></div>
+</section>
+<section id="unit" class="screen">
+<div class="section"><button class="secondary" onclick="show('notebook')"><svg class="iconSvg btnIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="m14.5 5-7 7 7 7"/><path d="M8 12h12"/></svg> Back</button><span id="unitTitle" class="pill"></span></div><div id="seatList"></div>
+</section>
+<section id="quiz" class="screen"><div id="quizArea"></div></section>
+<section id="revision" class="screen">
+<div class="pageHead"><div><div class="eyebrow">YOUR QUEUE</div><h2><svg class="iconSvg navIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 8a8 8 0 0 0-14.7-2L3 9"/><path d="M3 4v5h5"/><path d="M4 16a8 8 0 0 0 14.7 2L21 15"/><path d="M21 20v-5h-5"/></svg> Revision</h2><p class="muted">Wrong MCQs waiting to be cleared</p></div><button class="primary startBtn" onclick="startAllRevision()">▶ Start</button></div>
+<div class="card revisionIntro"><div class="introIcon"><svg class="iconSvg navIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 8a8 8 0 0 0-14.7-2L3 9"/><path d="M3 4v5h5"/><path d="M4 16a8 8 0 0 0 14.7 2L21 15"/><path d="M21 20v-5h-5"/></svg></div><div><b>Automatic Revision Queue</b><p class="muted" style="margin:6px 0 0">Wrong MCQs stay here until you answer them correctly. Retest a whole Seat or clear the full queue.</p></div></div>
+<div class="section"><h2><svg class="iconSvg" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v17H6.5A2.5 2.5 0 0 0 4 21z"/><path d="M4 4.5V21M8 6h8M8 10h8"/></svg> Pending by Seat</h2></div><div id="revisionList"></div>
+</section>
+<section id="files" class="screen">
+<div class="section"><h2><svg class="iconSvg navIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3.5h10l4 4V21H5z"/><path d="M15 3.5V8h4M8 12h8M8 16h6"/><path d="m15.5 17.5 3-3 2 2-3 3-2.5.5z"/></svg> Notes & Files</h2><button class="primary" onclick="document.getElementById('fileInput').click()">＋ Add</button></div>
+<input id="fileInput" type="file" accept="image/*,.pdf" multiple onchange="addFiles(this.files)"><input id="fileSearch" class="search" placeholder="Search files..." oninput="renderFiles()"><div class="tabs" id="fileTabs"></div><div class="card" style="margin-bottom:12px"><b>💾 Offline storage</b><div class="muted" style="font-size:12px;margin-top:4px">Photos and PDFs are saved on this device. Tap a file to open it.</div></div><div class="list" id="fileList"></div>
+</section>
+<section id="progress" class="screen">
+<div class="section"><h2>📊 Progress</h2><button class="danger" onclick="resetStats()">Reset</button></div>
+<div class="card"><div class="statgrid"><div class="stat"><strong id="pt">0</strong><span>Attempts</span></div><div class="stat"><strong id="pc">0</strong><span>Correct</span></div><div class="stat"><strong id="pw">0</strong><span>Wrong</span></div><div class="stat"><strong id="pa">0%</strong><span>Accuracy</span></div></div></div>
+<div class="section"><h2>🔁 Pending Revision</h2></div><div class="list" id="progressRevision"></div>
+</section>
+</main>
+<nav class="bottom"><div class="nav" style="grid-template-columns:repeat(5,1fr)">
+<button data-nav="home" onclick="show('home')"><b><svg class="iconSvg" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.8 12 3l9 7.8"/><path d="M5.5 9.8V21h13V9.8"/><path d="M9.5 21v-6h5v6"/></svg></b>Home</button><button data-nav="calendar" onclick="show('calendar')"><b><svg class="iconSvg" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="16" rx="2.5"/><path d="M7 3v4M17 3v4M3.5 9h17"/><path d="M8 13h2M14 13h2M8 17h2M14 17h2"/></svg></b>Calendar</button><button data-nav="revision" onclick="show('revision')"><b><svg class="iconSvg" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 8a8 8 0 0 0-14.7-2L3 9"/><path d="M3 4v5h5"/><path d="M4 16a8 8 0 0 0 14.7 2L21 15"/><path d="M21 20v-5h-5"/></svg></b>Revision</button><button data-nav="marks" onclick="openMarksTracker()"><b><svg class="iconSvg" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20V10M12 20V5M19 20V8"/><path d="M3 20h18"/></svg></b>Marks</button><button data-nav="notes" onclick="show('files')"><b><svg class="iconSvg" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3.5h10l4 4V21H5z"/><path d="M15 3.5V8h4M8 12h8M8 16h6"/><path d="m15.5 17.5 3-3 2 2-3 3-2.5.5z"/></svg></b>Notes</button>
+</div></nav>
+</div><div class="modal" id="modal"><div class="sheet" id="sheet"></div></div><div class="toast" id="toast"></div>
+<script>
+const KEY='bilal_study_hub_v18';
+const OLD_KEY='bilal_study_hub_v7';
+const memoryStore={};
+function storageGet(k){try{return window.localStorage.getItem(k)}catch(e){return memoryStore[k]??null}}
+function storageSet(k,v){try{window.localStorage.setItem(k,v)}catch(e){memoryStore[k]=v}}
+function storageRemove(k){try{window.localStorage.removeItem(k)}catch(e){delete memoryStore[k]}}
+let rawState=null;
+try{rawState=storageGet(KEY)||storageGet(OLD_KEY)}catch(e){rawState=null}
+let state={mcqs:[],stats:{attempts:0,correct:0,wrong:0},wrongIds:[],wrongMeta:{},files:[],fileFolder:'All',events:[]};
+try{if(rawState)state=JSON.parse(rawState)||state}catch(e){}
+if(!Array.isArray(state.mcqs))state.mcqs=[];if(!state.stats)state.stats={attempts:0,correct:0,wrong:0};if(!Array.isArray(state.wrongIds))state.wrongIds=[];if(!state.wrongMeta)state.wrongMeta={};if(!Array.isArray(state.files))state.files=[];if(!Array.isArray(state.events))state.events=[];if(!state.settings)state.settings={showCountdown:true,autoRevision:true};if(typeof state.settings.showCountdown!=='boolean')state.settings.showCountdown=true;if(typeof state.settings.autoRevision!=='boolean')state.settings.autoRevision=true;
+let selectedUnit=1,selectedSeat=null,quizQuestions=[],quizIndex=0,answered=false,quizResults=[],quizMode='seat',revisionSource='';let calDate=new Date(new Date().getFullYear(),new Date().getMonth(),1);
+function save(){storageSet(KEY,JSON.stringify(state))}
+function toast(t){let e=document.getElementById('toast');e.textContent=t;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),1800)}
+function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+function show(id){let target=document.getElementById(id);if(!target)return;document.querySelectorAll('.screen').forEach(e=>{e.classList.remove('active');e.style.setProperty('display','none','important')});target.classList.add('active');target.style.setProperty('display',id==='home'?'flex':'block','important');document.querySelectorAll('.nav button').forEach(e=>e.classList.toggle('active',e.dataset.nav===(id==='files'?'notes':id)));document.body.classList.toggle('homeLocked',id==='home');try{if(id==='home')home();if(id==='calendar')renderCalendar();if(id==='notebook')notebook();if(id==='revision')revision();if(id==='progress')progress();if(id==='files')renderFiles()}catch(err){console.error(err);toast('This section could not load')}}
+function home(){let e=document.getElementById('homeRevisionCount');if(e)e.textContent=getRevisionQuestions().length+' pending MCQs';}
+
+function pad2(n){return String(n).padStart(2,'0')}
+function dateKey(y,m,d){return `${y}-${pad2(m+1)}-${pad2(d)}`}
+function parseDateKey(s){let [y,m,d]=String(s).split('-').map(Number);return new Date(y,m-1,d)}
+function formatDateLong(s){let d=parseDateKey(s);return d.toLocaleDateString(undefined,{day:'numeric',month:'short',year:'numeric'})}
+function dayDiff(s){let target=parseDateKey(s);let today=new Date();let t=new Date(today.getFullYear(),today.getMonth(),today.getDate());return Math.round((target-t)/86400000)}
+function countdownText(s){let n=dayDiff(s);return n>0?`${n} day${n===1?'':'s'} left`:n===0?'TODAY':'COMPLETED'}
+function categoryClass(c){return 'cat-'+String(c||'other').toLowerCase().replace(/[^a-z]/g,'')}
+function categoryLabel(c){return ({exam:'Exam',test:'UT / Test',study:'Study',college:'College',assignment:'Assignment',submission:'Submission',personal:'Personal',other:'Other'})[c]||'Other'}
+function eventsOnDate(s){return state.events.filter(e=>e.date===s).sort((a,b)=>String(a.time||'').localeCompare(String(b.time||''))||a.title.localeCompare(b.title))}
+function renderCalendar(){
+  let y=calDate.getFullYear(),m=calDate.getMonth();
+  document.getElementById('calMonthTitle').textContent=calDate.toLocaleDateString(undefined,{month:'long',year:'numeric'});
+  let ms=document.getElementById('calMonthSelect');ms.innerHTML=Array.from({length:12},(_,i)=>`<option value="${i}" ${i===m?'selected':''}>${new Date(2000,i,1).toLocaleDateString(undefined,{month:'long'})}</option>`).join('');
+  let ys=document.getElementById('calYearSelect'),cy=new Date().getFullYear();let minY=Math.min(cy-10,y-2),maxY=Math.max(cy+10,y+2);
+  ys.innerHTML=Array.from({length:maxY-minY+1},(_,i)=>minY+i).map(v=>`<option value="${v}" ${v===y?'selected':''}>${v}</option>`).join('');
+  let first=new Date(y,m,1),start=new Date(y,m,1-first.getDay()),days=42,html='<div class="calGrid">';
+  ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].forEach(d=>html+=`<div class="calDow">${d}</div>`);
+  for(let i=0;i<days;i++){
+    let d=new Date(start.getFullYear(),start.getMonth(),start.getDate()+i),key=dateKey(d.getFullYear(),d.getMonth(),d.getDate()),ev=eventsOnDate(key),inMonth=d.getMonth()===m,today=key===dateKey(new Date().getFullYear(),new Date().getMonth(),new Date().getDate());
+    html+=`<button type="button" class="calDay ${inMonth?'':'out'} ${today?'today':''}" onclick="openDay('${key}')"><span class="dayNum">${d.getDate()}</span>${ev.slice(0,2).map(e=>`<span class="eventChip ${categoryClass(e.category)}">${esc(e.title)}${e.countdown?' ⏳':''}</span>`).join('')}${ev.length>2?`<div class="eventMore">+${ev.length-2} more</div>`:''}</button>`;
+  }
+  html+='</div>';document.getElementById('calendarGrid').innerHTML=html;
+  renderCountdowns();renderEventList();
+}
+function changeCalendarMonth(delta){calDate=new Date(calDate.getFullYear(),calDate.getMonth()+delta,1);renderCalendar()}
+function goCalendarToday(){let n=new Date();calDate=new Date(n.getFullYear(),n.getMonth(),1);renderCalendar()}
+function jumpCalendar(){let m=Number(document.getElementById('calMonthSelect').value),y=Number(document.getElementById('calYearSelect').value);calDate=new Date(y,m,1);renderCalendar()}
+function renderCountdowns(){
+  let list=state.settings.showCountdown ? state.events.filter(e=>e.countdown&&dayDiff(e.date)>=0).sort((a,b)=>dayDiff(a.date)-dayDiff(b.date)||a.title.localeCompare(b.title)) : [];
+  let el=document.getElementById('countdownBar'); if(!el)return;
+  let top=list.slice(0,3);
+  el.innerHTML=top.length?top.map(e=>{
+    let n=dayDiff(e.date);
+    return `<button type="button" class="cdMini ${n===0?'today':''}" onclick="openEventDetails('${e.id}')"><div class="cdTitle">${esc(e.title)}</div><div class="cdDays">${esc(countdownText(e.date))}</div><div class="cdDate">${formatDateLong(e.date)}</div></button>`;
+  }).join(''):'<button type="button" class="cdMini" onclick="openEventForm()" style="grid-column:1/-1"><div class="cdTitle">${ICONS.timer} No countdown selected</div><div class="cdDays" style="font-size:12px">Add an event and turn Countdown ON</div><div class="cdDate">Your selected major dates appear here</div></button>';
+}
+function renderEventList(){
+  let future=state.events.filter(e=>dayDiff(e.date)>=0).sort((a,b)=>a.date.localeCompare(b.date)||String(a.time||'').localeCompare(String(b.time||'')));
+  let el=document.getElementById('eventList');
+  if(!el)return;
+  el.innerHTML=future.length?future.slice(0,30).map(e=>`<button type="button" class="item eventDetail" style="width:100%;text-align:left" onclick="openEventDetails('${e.id}')"><div><b>${esc(e.title)}</b><div class="muted" style="font-size:12px;margin-top:4px">${formatDateLong(e.date)}${e.time?' • '+esc(e.time):''} • ${categoryLabel(e.category)}</div></div><span class="arrow">›</span></button>`).join(''):'<div class="card calendarEmpty">No upcoming events yet.<br><br>Tap <b>＋ Add</b> to mark an important date.</div>';
+}
+function openDay(key){
+  let ev=eventsOnDate(key);
+  sheet.innerHTML=`<h2>${ICONS.calendar} ${formatDateLong(key)}</h2>${ev.length?`<div class="list">${ev.map(e=>`<button type="button" class="item eventDetail" style="width:100%;text-align:left" onclick="openEventDetails('${e.id}')"><div><b>${esc(e.title)}</b><div class="muted" style="font-size:12px;margin-top:4px">${categoryLabel(e.category)}${e.time?' • '+esc(e.time):''}${e.countdown?' • Countdown ON':''}</div></div><span class="arrow">›</span></button>`).join('')}</div>`:'<div class="card calendarEmpty">No events marked on this date.</div>'}<div class="actions"><button class="secondary" onclick="closeModal()">Close</button><button class="primary" onclick="closeModal();openEventForm('${key}')">＋ Add Event</button></div>`;openModal();
+}
+
+function openAllCountdowns(){
+  let list=state.settings.showCountdown ? state.events.filter(e=>e.countdown&&dayDiff(e.date)>=0).sort((a,b)=>dayDiff(a.date)-dayDiff(b.date)||a.title.localeCompare(b.title)) : [];
+  sheet.innerHTML=`<h2>${ICONS.timer} Countdowns (${list.length})</h2>${list.length?`<div class="list">${list.map(e=>`<button type="button" class="item eventDetail" style="width:100%;text-align:left" onclick="openEventDetails('${e.id}')"><div><b>${esc(e.title)}</b><div class="muted" style="font-size:12px;margin-top:4px">${formatDateLong(e.date)} • ${categoryLabel(e.category)}</div></div><span class="daysLeft">${esc(countdownText(e.date))}</span></button>`).join('')}</div>`:'<div class="card calendarEmpty">No countdowns selected.</div>'}<div class="actions"><button class="secondary" onclick="closeModal()">Close</button><button class="primary" onclick="closeModal();openEventForm()">＋ Add Countdown</button></div>`;
+  openModal();
+}
+function openAllEvents(){
+  let all=state.events.slice().sort((a,b)=>a.date.localeCompare(b.date)||String(a.time||'').localeCompare(String(b.time||'')));
+  sheet.innerHTML=`<h2>${ICONS.pin} All Events</h2>${all.length?`<div class="list">${all.map(e=>{
+    let countdown=e.countdown ? (dayDiff(e.date)>=0 ? countdownText(e.date) : 'Completed') : '';
+    return `<button type="button" class="item eventDetail allEventCard" style="width:100%;text-align:left" onclick="openEventDetails('${e.id}')">
+      <div>
+        <b>${esc(e.title)}</b>
+        <div class="muted" style="font-size:12px;margin-top:4px">${formatDateLong(e.date)}${e.time?' • '+esc(e.time):''} • ${categoryLabel(e.category)}</div>
+        ${countdown?`<div class="eventCountdown">${esc(countdown)}</div>`:''}
+      </div>
+      <span class="arrow">›</span>
+    </button>`;
+  }).join('')}</div>`:'<div class="card calendarEmpty">No events yet.</div>'}<div class="actions"><button class="secondary" onclick="closeModal()">Close</button><button class="primary" onclick="closeModal();openEventForm()">＋ Add Event</button></div>`;
+  openModal();
+}
+function openEventForm(date='',id=''){
+  let e=id?state.events.find(x=>x.id===id):null;
+  if(id&&!e){toast('Event not found');return}
+  let d=e?e.date:(date||dateKey(calDate.getFullYear(),calDate.getMonth(),calDate.getDate())),title=e?e.title:'',category=e?e.category:'other',time=e?e.time||'':'',notes=e?e.notes||'':'',countdown=e?!!e.countdown:false;
+  sheet.innerHTML=`<h2>${e?ICONS.edit:ICONS.pin} ${e?'Edit Event':'Add Event'}</h2>
+  <div class="field"><label>Event name</label><input id="eventTitle" maxlength="80" value="${esc(title)}" placeholder="e.g. UT-2"></div>
+  <div class="field"><label>Date</label><input id="eventDate" type="date" value="${d}"></div>
+  <div class="field"><label>Category</label><select id="eventCategory">${['exam','test','study','college','assignment','submission','personal','other'].map(c=>`<option value="${c}" ${c===category?'selected':''}>${categoryLabel(c)}</option>`).join('')}</select></div>
+  <div class="field"><label>Time (optional)</label><input id="eventTime" type="time" value="${esc(time)}"></div>
+  <div class="field"><label>Notes (optional)</label><textarea id="eventNotes" maxlength="500" placeholder="Add details...">${esc(notes)}</textarea></div>
+  <div class="card"><label style="display:flex;gap:10px;align-items:center;font-weight:800"><input id="eventCountdown" type="checkbox" ${countdown?'checked':''}> Show countdown under Calendar</label><div class="muted" style="font-size:12px;margin-top:6px">Only selected events appear in the countdown section.</div></div>
+  <div class="eventActions"><button class="secondary" onclick="closeModal()">Cancel</button>${e?`<button class="danger" onclick="deleteEvent('${e.id}')">${ICONS.trash} Delete</button>`:''}<button class="primary" onclick="saveEvent('${id}')">${e?'Save Changes':'Save Event'}</button></div>`;
+  openModal();
+}
+function saveEvent(id=''){
+  let title=document.getElementById('eventTitle').value.trim(),date=document.getElementById('eventDate').value,category=document.getElementById('eventCategory').value,time=document.getElementById('eventTime').value,notes=document.getElementById('eventNotes').value.trim(),countdown=document.getElementById('eventCountdown').checked;
+  if(!title){toast('Enter an event name');return}
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(date)){toast('Choose a valid date');return}
+  if(id){
+    let e=state.events.find(x=>x.id===id);if(!e){toast('Event not found');return}
+    Object.assign(e,{title,date,category,time,notes,countdown});
+  }else{
+    state.events.push({id:'ev_'+Date.now()+'_'+Math.random().toString(36).slice(2),title,date,category,time,notes,countdown});
+  }
+  save();closeModal();calDate=new Date(parseDateKey(date).getFullYear(),parseDateKey(date).getMonth(),1);renderCalendar();toast(id?'Event updated ✓':'Event added ✓');
+}
+function openEventDetails(id){
+  let e=state.events.find(x=>x.id===id);if(!e){toast('Event not found');return}
+  let n=dayDiff(e.date);
+  sheet.innerHTML=`<h2>${ICONS.pin} ${esc(e.title)}</h2><div class="card"><div class="eventDetail"><div><b>${formatDateLong(e.date)}</b><div class="muted" style="margin-top:5px">${categoryLabel(e.category)}${e.time?' • '+esc(e.time):''}</div></div>${e.countdown?`<span class="daysLeft ${n===0?'today':''}">${esc(countdownText(e.date))}</span>`:''}</div>${e.notes?`<p style="margin-bottom:0">${esc(e.notes)}</p>`:''}</div><div class="eventActions"><button class="secondary" onclick="closeModal();openEventForm('${e.date}','${e.id}')">${ICONS.edit} Edit</button><button class="danger" onclick="deleteEvent('${e.id}')">${ICONS.trash} Delete</button><button class="primary" onclick="closeModal()">Close</button></div>`;openModal();
+}
+function deleteEvent(id){
+  let e=state.events.find(x=>x.id===id);if(!e)return;
+  if(confirm(`Delete "${e.title}"?`)){state.events=state.events.filter(x=>x.id!==id);save();closeModal();renderCalendar();toast('Event deleted');}
+}
+
+function openMarksTracker(){window.location.href='https://sayyedb056-alt.github.io/MARK-S-TRACKER-/'}
+function openSubject(subject){let names={ETC:'Emerging Trends in Civil Engineering',TOS:'Theory of Structure',WRE:'Water Resource Engineering',TEN:'Road Traffic Engineering'};let desc=names[subject]||subject;if(subject==='ETC'){document.getElementById('subjectContent').innerHTML=`<div class="card"><div class="subjectHead">${ICONS.folder} ETC</div><div class="folderCount">${esc(desc)}</div><p class="muted">5 Units → MCQ Seats → Quiz → Final Recap → Revision</p><button class="primary" onclick="show('notebook')">Open ETC MCQ Notebook →</button></div><div class="subjectActions"><button class="subjectAction" onclick="show('revision')"><b>${ICONS.revision} Revision</b><small>Wrong ETC MCQs</small></button><button class="subjectAction" onclick="show('files')"><b>${ICONS.notes} Notes</b><small>Study notes & files</small></button><button class="subjectAction" onclick="show('calendar')"><b>${ICONS.calendar} Calendar</b><small>Events & countdowns</small></button></div>`}else{document.getElementById('subjectContent').innerHTML=`<div class="card coming"><div class="subjectHead">${ICONS.folder} ${subject}</div><div class="folderCount">${esc(desc)}</div><p class="muted">Use Notes & Files for study material and Calendar for tests, exams, submissions and other important dates.</p></div><div class="subjectActions"><button class="subjectAction" onclick="show('files')"><b>${ICONS.notes} Notes</b><small>Open study notes</small></button><button class="subjectAction" onclick="show('calendar')"><b>${ICONS.calendar} Calendar</b><small>Events & countdowns</small></button><button class="subjectAction" onclick="show('revision')"><b>${ICONS.revision} Revision</b><small>Common revision section</small></button></div>`}show('subject')}
+function getRevisionQuestions(){return state.mcqs.filter(q=>state.wrongIds.includes(q.id))}
+function seatLabel(q){return `${q.subject} • Unit ${q.unit} • Seat ${String(q.seat).padStart(2,'0')}`}
+function seatKey(q){return `${q.subject}__${q.unit}__${q.seat}`}
+function notebook(){let html='';for(let u=1;u<=5;u++){let qs=state.mcqs.filter(q=>q.subject==='ETC'&&Number(q.unit)===u);let seats=new Set(qs.map(q=>Number(q.seat))).size;html+=`<div class="item" style="margin-bottom:10px" onclick="openUnit(${u})"><div class="unit"><div class="unitIcon">📘</div><div style="flex:1"><h3>Unit ${u}</h3><p>${qs.length} MCQs • ${seats} Seats</p></div><span class="arrow">›</span></div></div>`}document.getElementById('units').innerHTML=html}
+function openUnit(u){selectedUnit=u;document.getElementById('unitTitle').textContent='ETC • Unit '+u;let qs=state.mcqs.filter(q=>q.subject==='ETC'&&Number(q.unit)===u);let seats=[...new Set(qs.map(q=>Number(q.seat)))].sort((a,b)=>a-b);document.getElementById('seatList').innerHTML=seats.length?seats.map(seat=>{let a=qs.filter(q=>Number(q.seat)===seat),pending=a.filter(q=>state.wrongIds.includes(q.id)).length;return `<button class="item" style="width:100%;text-align:left;margin-bottom:10px" onclick="startSeat(${seat})"><div class="seat"><div class="seatIcon">🪑</div><div class="seatInfo"><b>Seat ${String(seat).padStart(2,'0')}</b><small>${a.length} MCQs • ${pending?pending+' pending revision':'No pending revision'}</small></div><span class="arrow">›</span></div></button>`}).join(''):'<div class="card empty">🪑 No MCQ Seats in this Unit yet.<br><br>Import a Seat script to add one.</div>';show('unit')}
+function startSeat(seat){selectedSeat=Number(seat);quizMode='seat';revisionSource='';quizQuestions=state.mcqs.filter(q=>q.subject==='ETC'&&Number(q.unit)===selectedUnit&&Number(q.seat)===selectedSeat).sort((a,b)=>Number(a.no)-Number(b.no));quizIndex=0;answered=false;quizResults=[];state.lastQuiz={mode:'seat',unit:selectedUnit,seat:selectedSeat};save();show('quiz');renderQuiz()}
+function startRevisionSeat(key){let qs=getRevisionQuestions().filter(q=>seatKey(q)===key).sort((a,b)=>Number(a.no)-Number(b.no));if(!qs.length){toast('Revision already clear');revision();return}quizMode='revision';revisionSource=key;quizQuestions=qs;quizIndex=0;answered=false;quizResults=[];state.lastQuiz={mode:'revision',source:key};save();show('quiz');renderQuiz()}
+function startAllRevision(){let qs=getRevisionQuestions().sort((a,b)=>seatLabel(a).localeCompare(seatLabel(b))||Number(a.no)-Number(b.no));if(!qs.length){toast('Revision queue is empty 🎉');return}quizMode='revision';revisionSource='ALL';quizQuestions=qs;quizIndex=0;answered=false;quizResults=[];state.lastQuiz={mode:'revision',source:'ALL'};save();show('quiz');renderQuiz()}
+function renderQuiz(){if(!quizQuestions.length){document.getElementById('quizArea').innerHTML='<div class="card empty">${ICONS.brain} No MCQs available.</div>';return}let q=quizQuestions[quizIndex],pct=Math.round(quizIndex/quizQuestions.length*100);let modeTitle=quizMode==='revision'?'${ICONS.revision} Revision':'${ICONS.brain} Quiz';let sourceTitle=quizMode==='revision'?(revisionSource==='ALL'?'All Pending Revision':seatLabel(q)):`ETC • Unit ${selectedUnit} • Seat ${String(selectedSeat).padStart(2,'0')}`;document.getElementById('quizArea').innerHTML=`<div class="quizHead"><button class="secondary" onclick="backFromQuiz()">${ICONS.back}</button><div><div class="quizTitle">${modeTitle}</div><div class="quizMeta">${esc(sourceTitle)} • Question ${quizIndex+1} of ${quizQuestions.length}</div></div></div><div class="progress" style="margin-bottom:14px"><i style="width:${pct}%"></i></div><div class="card qcard"><div class="qnum">QUESTION ${quizIndex+1} / ${quizQuestions.length}</div><div class="question">${esc(q.q)}</div><div id="opts">${q.options.map((o,i)=>`<button class="option" onclick="answer(${i})">${String.fromCharCode(65+i)}) ${esc(o)}</button>`).join('')}</div><div id="feedback"></div><div class="actions"><button class="secondary" onclick="quizPrev()">${ICONS.back} Previous</button><button class="primary" onclick="quizNext()">${quizIndex===quizQuestions.length-1?'Finish ✓':'Next →'}</button></div></div>`;answered=false}
+function answer(i){if(answered)return;answered=true;let q=quizQuestions[quizIndex],correct=q.answer.charCodeAt(0)-65,bs=[...document.querySelectorAll('.option')];bs.forEach((b,n)=>{if(n===correct)b.classList.add('correct');if(n===i&&i!==correct)b.classList.add('wrong');b.disabled=true});let ok=i===correct;quizResults[quizIndex]={qId:q.id,correct:ok};state.stats.attempts++;if(ok){state.stats.correct++;state.wrongIds=state.wrongIds.filter(x=>x!==q.id);delete state.wrongMeta[q.id];document.getElementById('feedback').innerHTML='<div class="feedback">✅ Correct! Removed from pending revision.</div>'}else{state.stats.wrong++;if(state.settings.autoRevision){if(!state.wrongIds.includes(q.id))state.wrongIds.push(q.id);state.wrongMeta[q.id]={wrongAt:Date.now(),subject:q.subject,unit:q.unit,seat:q.seat,no:q.no};}document.getElementById('feedback').innerHTML=`<div class="feedback">❌ Wrong. Correct answer: <b>${esc(q.answer)}</b><br>Added to Revision → ${esc(seatLabel(q))}</div>`}save()}
+function quizNext(){if(!answered){toast('Select an answer first');return}if(quizIndex===quizQuestions.length-1){showRecap();return}quizIndex++;renderQuiz()}
+function quizPrev(){if(quizIndex>0){quizIndex--;renderQuiz()}else toast('This is the first question')}
+function showRecap(){let total=quizQuestions.length,correct=quizResults.filter(x=>x&&x.correct).length,wrong=total-correct,accuracy=total?Math.round(correct/total*100):0,wrongQs=quizQuestions.filter((q,i)=>quizResults[i]&&!quizResults[i].correct);let title=quizMode==='revision'?'${ICONS.revision} Revision — Final Recap':`${ICONS.brain} Seat ${String(selectedSeat).padStart(2,'0')} — Final Recap`;let source=quizMode==='revision'?(revisionSource==='ALL'?'All Pending Revision':`Revision • ${seatLabel(quizQuestions[0])}`):`ETC • Unit ${selectedUnit}`;document.getElementById('quizArea').innerHTML=`<div class="section"><button class="secondary" onclick="backFromQuiz()">${ICONS.back} Back</button></div><div class="card recap"><div class="recapTitle">${title}</div><div class="muted center">${esc(source)}</div><div class="score">${correct}/${total}</div><div class="center muted" style="margin-bottom:16px">Accuracy ${accuracy}%</div><div class="statgrid"><div class="stat"><strong>${total}</strong><span>Attempted</span></div><div class="stat"><strong>${correct}</strong><span>Correct</span></div><div class="stat"><strong>${wrong}</strong><span>Wrong</span></div><div class="stat"><strong>${getRevisionQuestions().length}</strong><span>Still Pending</span></div></div></div><div class="actions">${quizMode==='seat'?`<button class="secondary" onclick="retrySeat()">🔄 Retry Seat</button>`:`<button class="secondary" onclick="retryCurrentRevision()">🔄 Retry Revision</button>`}<button class="primary" onclick="show('revision')">🔁 Open Revision</button></div>${wrongQs.length?`<div class="section"><h2>${ICONS.close} Wrong in this attempt</h2></div><div class="list">${wrongQs.map(q=>`<div class="item wrongBox"><b>Q${q.no}. ${esc(q.q)}</b><div class="muted" style="font-size:12px;margin-top:5px">${esc(seatLabel(q))} • Correct answer: ${esc(q.answer)}</div></div>`).join('')}</div>`:'<div class="card center" style="margin-top:14px">Perfect! No wrong answers in this attempt.</div>'}`}
+function retrySeat(){startSeat(selectedSeat)}function retryCurrentRevision(){revisionSource==='ALL'?startAllRevision():startRevisionSeat(revisionSource)}function backFromQuiz(){quizMode==='revision'?show('revision'):openUnit(selectedUnit)}
+function revision(){let qs=getRevisionQuestions();if(!qs.length){document.getElementById('revisionList').innerHTML='<div class="card revisionEmpty"><div class="revisionEmptyIcon">${ICONS.revision}</div><b>Revision queue is empty</b><p>Wrong MCQs from your next quiz will automatically appear here.</p></div>';document.getElementById('progressRevision').innerHTML='<div class="empty">🎉 No pending revision MCQs.</div>';return}let groups={};qs.forEach(q=>{let k=seatKey(q);(groups[k]??=[]).push(q)});document.getElementById('revisionList').innerHTML=Object.entries(groups).map(([key,arr])=>{let first=arr[0];return `<div class="item revisionGroup"><div class="revisionTop"><div><b>${ICONS.seat} ${esc(seatLabel(first))}</b><small>${arr.length} MCQ${arr.length===1?'':'s'} pending</small></div><button class="primary" onclick="startRevisionSeat('${key}')">Retest →</button></div><div class="revisionQuestions">${arr.slice(0,3).map(q=>`<div>${ICONS.close} Q${q.no}. ${esc(q.q)}</div>`).join('')}${arr.length>3?`<div class="muted">+ ${arr.length-3} more...</div>`:''}</div></div>`}).join('');document.getElementById('progressRevision').innerHTML=qs.map(q=>`<div class="item"><b>Q${q.no}. ${esc(q.q)}</b><div class="muted" style="font-size:12px;margin-top:4px">🔁 ${esc(seatLabel(q))}</div></div>`).join('')}
+function progress(){let s=state.stats,a=s.attempts?Math.round(s.correct/s.attempts*100):0;pt.textContent=s.attempts;pc.textContent=s.correct;pw.textContent=s.wrong;pa.textContent=a+'%';revision()}
+function resetStats(){if(confirm('Reset quiz statistics and revision queue?')){state.stats={attempts:0,correct:0,wrong:0};state.wrongIds=[];state.wrongMeta={};save();progress();home();toast('Progress reset')}}
+function openImport(){sheet.innerHTML=`<h2>📥 Import ETC MCQ Seat</h2><div class="field"><label>MCQ Seat Script / File</label><input id="scriptFile" type="file" accept=".js,.json,.txt" onchange="readScript(this.files[0])"></div><div class="card"><b>Automatic placement</b><p class="muted" style="font-size:13px;margin-bottom:0">Subject + Unit + Seat are read from the script. For now Notebook accepts ETC; Revision is already designed to work across subjects later.</p></div><div class="field"><label>Or paste script</label><textarea id="scriptText" placeholder='const ETC_UNIT3_SEAT01 = { ... }'></textarea></div><div class="actions"><button class="secondary" onclick="closeModal()">Cancel</button><button class="primary" onclick="importScript()">Import Seat</button></div>`;openModal()}
+function readScript(file){if(!file)return;let r=new FileReader();r.onload=()=>{scriptText.value=r.result;toast('Script loaded')};r.readAsText(file)}
+function importScript(){let raw=scriptText.value.trim();if(!raw){toast('Add a script first');return}let data;try{let clean=raw.replace(/^\s*(const|let|var)\s+\w+\s*=\s*/,'').replace(/;\s*$/,'');data=JSON.parse(clean)}catch(e){toast('Script format not recognized');return}if(String(data.subject).toUpperCase()!=='ETC'||!data.unit||!data.seat||!Array.isArray(data.questions)){toast('Use ETC + Unit + Seat + Questions');return}let unit=Number(data.unit),seat=Number(data.seat);if(unit<1||unit>5){toast('Unit must be 1 to 5');return}let old=state.mcqs.filter(q=>q.subject==='ETC'&&Number(q.unit)===unit&&Number(q.seat)===seat);old.forEach(q=>{state.wrongIds=state.wrongIds.filter(id=>id!==q.id);delete state.wrongMeta[q.id]});let existing=state.mcqs.filter(q=>!(q.subject==='ETC'&&Number(q.unit)===unit&&Number(q.seat)===seat));let valid=data.questions.filter(q=>q.question&&Array.isArray(q.options)&&q.options.length===4&&/^[ABCD]$/i.test(q.answer));if(!valid.length){toast('No valid MCQs found');return}let fresh=valid.map((q,i)=>({id:'q_'+Date.now()+'_'+i+'_'+Math.random().toString(36).slice(2),no:q.no||i+1,q:q.question,options:q.options,answer:q.answer.toUpperCase(),subject:'ETC',unit,seat}));state.mcqs=existing.concat(fresh);save();closeModal();notebook();toast(`${fresh.length} MCQs → ETC Unit ${unit} Seat ${String(seat).padStart(2,'0')} ✓`);setTimeout(()=>openUnit(unit),250)}
+function settings(){
+  let st=state.settings||{showCountdown:true,autoRevision:true};
+  sheet.innerHTML=`<div class="settingsHead"><div><div class="eyebrow">APP SETTINGS</div><h2>${ICONS.settings} Settings</h2><p class="muted settingsSub">Control the parts of Bilal Study Hub that affect your daily workflow.</p></div></div>
+  <div class="settingsList">
+    <div class="settingRow"><div class="settingIcon">${ICONS.timer}</div><div class="settingInfo"><b>Calendar countdowns</b><small>Show your selected major-event countdowns directly under the calendar.</small></div><button class="switch ${st.showCountdown?'on':''}" id="countdownSwitch" onclick="toggleSetting('showCountdown')" aria-label="Toggle calendar countdowns"><span></span></button></div>
+    <div class="settingRow"><div class="settingIcon">${ICONS.revision}</div><div class="settingInfo"><b>Automatic revision</b><small>Wrong MCQs are added to Revision and remain there until answered correctly.</small></div><button class="switch ${st.autoRevision?'on':''}" id="revisionSwitch" onclick="toggleSetting('autoRevision')" aria-label="Toggle automatic revision"><span></span></button></div>
+  </div>
+  <div class="settingsBlock"><div class="settingsBlockTitle">Data</div><button class="settingAction" onclick="exportAppData()"><span class="settingActionIcon">${ICONS.download}</span><span><b>Export app data</b><small>Save MCQs, revision progress, events and notes metadata as a backup.</small></span><span class="arrow">›</span></button><button class="settingAction dangerAction" onclick="resetAppData()"><span class="settingActionIcon">${ICONS.trash}</span><span><b>Reset app data</b><small>Delete this device's Study Hub data after confirmation.</small></span><span class="arrow">›</span></button></div>
+  <div class="settingsAbout"><span>${ICONS.book}</span><div><b>Bilal Study Hub</b><small>CE5K • Focused study workspace</small></div><span class="version">v18</span></div>
+  <div class="actions"><button class="secondary" onclick="closeModal()">Close</button></div>`;
+  openModal();
+}
+function toggleSetting(key){state.settings[key]=!state.settings[key];save();settings();if(key==='showCountdown'&&document.getElementById('calendar').classList.contains('active'))renderCalendar();toast(state.settings[key]?'Setting enabled':'Setting disabled')}
+function exportAppData(){let payload={version:'18',exportedAt:new Date().toISOString(),mcqs:state.mcqs,stats:state.stats,wrongIds:state.wrongIds,wrongMeta:state.wrongMeta,events:state.events,settings:state.settings,files:state.files};let blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='bilal-study-hub-backup.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);toast('Backup exported ✓')}
+function resetAppData(){if(!confirm('Reset all Bilal Study Hub data on this device? This cannot be undone.'))return;storageRemove(KEY);storageRemove(OLD_KEY);location.reload()}
+function openModal(){modal.classList.add('show')}function closeModal(){modal.classList.remove('show')}modal.addEventListener('click',e=>{if(e.target.id==='modal')closeModal()})
+const DB_NAME='bilal_study_files_v1';const DB_STORE='files';let dbPromise=null;
+function openFileDB(){if(dbPromise)return dbPromise;dbPromise=new Promise((resolve,reject)=>{let r=indexedDB.open(DB_NAME,1);r.onupgradeneeded=()=>r.result.createObjectStore(DB_STORE,{keyPath:'id'});r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error)});return dbPromise}
+async function saveFileBlob(file,folder){try{let db=await openFileDB();let id='f_'+Date.now()+'_'+Math.random().toString(36).slice(2);await new Promise((res,rej)=>{let tx=db.transaction(DB_STORE,'readwrite');tx.objectStore(DB_STORE).put({id,name:file.name,size:file.size,type:file.type,folder,blob:file});tx.oncomplete=res;tx.onerror=()=>rej(tx.error)});return id}catch(e){return null}}
+async function loadFileBlob(id){try{let db=await openFileDB();return await new Promise((res,rej)=>{let tx=db.transaction(DB_STORE,'readonly');let rq=tx.objectStore(DB_STORE).get(id);rq.onsuccess=()=>res(rq.result);rq.onerror=()=>rej(rq.error)})}catch(e){return null}}
+async function openSavedFile(id){let rec=await loadFileBlob(id);if(!rec||!rec.blob){toast('File data not available');return}let url=URL.createObjectURL(rec.blob);window.open(url,'_blank');setTimeout(()=>URL.revokeObjectURL(url),60000)}
+function renderFiles(){let tabs=document.getElementById('fileTabs');tabs.innerHTML=['All','ETC','TOS','WRE','TEN'].map(f=>`<button class="tab ${(!state.fileFolder&&f==='All')||state.fileFolder===f?'active':''}" onclick="state.fileFolder='${f}';save();renderFiles()">${f}</button>`).join('');let f=state.files||[],folder=state.fileFolder||'All',search=(document.getElementById('fileSearch').value||'').toLowerCase();f=f.filter(x=>(folder==='All'||x.folder===folder)&&x.name.toLowerCase().includes(search));document.getElementById('fileList').innerHTML=f.length?f.map(x=>`<button class="item file" style="width:100%;text-align:left" onclick="openSavedFile('${x.id||''}')"><div class="thumb">${x.type&&x.type.startsWith('image/')?'🖼️':x.type==='application/pdf'?'📕':'📄'}</div><div class="fileInfo"><b>${esc(x.name)}</b><small>${esc(x.folder)} • ${Math.max(1,Math.round(x.size/1024))} KB</small></div><span class="arrow">›</span></button>`).join(''):'<div class="empty">📂 No files added yet.</div>'}
+async function addFiles(list){for(const file of [...list]){let id=await saveFileBlob(file,'ETC');state.files=state.files||[];state.files.push({id,name:file.name,size:file.size,type:file.type,folder:'ETC'});}save();renderFiles();toast('File saved offline ✓')}
+const ICONS={
+  home:`<svg class="iconSvg navIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.8 12 3l9 7.8"/><path d="M5.5 9.8V21h13V9.8"/><path d="M9.5 21v-6h5v6"/></svg>`,
+  calendar:`<svg class="iconSvg navIcon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="16" rx="2.5"/><path d="M7 3v4M17 3v4M3.5 9h17"/><path d="M8 13h2M14 13h2M8 17h2M14 17h2"/></svg>`,
+  revision:`<svg class="iconSvg navIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 8a8 8 0 0 0-14.7-2L3 9"/><path d="M3 4v5h5"/><path d="M4 16a8 8 0 0 0 14.7 2L21 15"/><path d="M21 20v-5h-5"/></svg>`,
+  marks:`<svg class="iconSvg navIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20V10M12 20V5M19 20V8"/><path d="M3 20h18"/><path d="M4 8h3v2H4zM11 3h3v2h-3zM18 6h3v2h-3z"/></svg>`,
+  notes:`<svg class="iconSvg navIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3.5h10l4 4V21H5z"/><path d="M15 3.5V8h4M8 12h8M8 16h6"/><path d="m15.5 17.5 3-3 2 2-3 3-2.5.5z"/></svg>`,
+  settings:`<svg class="iconSvg" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.2 3.5h5.6l.7 2.1 1.8 1.1 2.1-.7 2.8 4.8-1.5 1.5v2.1l1.5 1.5-2.8 4.8-2.1-.7-1.8 1.1-.7 2.1H9.2l-.7-2.1-1.8-1.1-2.1.7-2.8-4.8 1.5-1.5v-2.1L1.8 10.8l2.8-4.8 2.1.7 1.8-1.1z"/><circle cx="12" cy="13" r="3.2"/></svg>`,
+  plus:`<svg class="iconSvg btnIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>`,
+  back:`<svg class="iconSvg btnIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="m14.5 5-7 7 7 7"/><path d="M8 12h12"/></svg>`,
+  left:`<svg class="iconSvg btnIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="m14.5 5-7 7 7 7"/></svg>`,
+  right:`<svg class="iconSvg btnIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="m9.5 5 7 7-7 7"/></svg>`,
+  add:`<svg class="iconSvg btnIcon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>`,
+  pin:`<svg class="iconSvg btnIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 21-1.3-3.8A7.5 7.5 0 0 1 6 10.3 6 6 0 0 1 12 4a6 6 0 0 1 6 6.3 7.5 7.5 0 0 1-4.7 6.9z"/><path d="M12 8.5v4M10 10.5h4"/></svg>`,
+  timer:`<svg class="iconSvg btnIcon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="7.5"/><path d="M9 3h6M12 5v3M12 13l3-2"/></svg>`,
+  trash:`<svg class="iconSvg btnIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h14M9 7V4h6v3M7 7l1 14h8l1-14M10 11v6M14 11v6"/></svg>`,
+  edit:`<svg class="iconSvg btnIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="m4 16.5-.8 4.3 4.3-.8L19 8.5 15.5 5z"/><path d="m14.5 6 3.5 3.5"/></svg>`,
+  close:`<svg class="iconSvg btnIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"/></svg>`,
+  chart:`<svg class="iconSvg" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V11h4v9M10 20V5h4v15M16 20V8h4v12"/><path d="M3 20h18"/></svg>`,
+  folder:`<svg class="iconSvg" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 6.5h6l2 2h9v10.5h-17z"/><path d="M3.5 6.5V5h7l2 2"/></svg>`,
+  brain:`<svg class="iconSvg" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5a3 3 0 0 0-5 2.2A3.2 3.2 0 0 0 5 13a3 3 0 0 0 3 5 3 3 0 0 0 3 2.5V5.5A3 3 0 0 0 9 5z"/><path d="M15 5a3 3 0 0 1 5 2.2A3.2 3.2 0 0 1 19 13a3 3 0 0 1-3 5 3 3 0 0 1-3 2.5V5.5A3 3 0 0 1 15 5z"/><path d="M7 9h2M15 9h2M8 14h2M14 14h2"/></svg>`,
+  book:`<svg class="iconSvg" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v17H6.5A2.5 2.5 0 0 0 4 21z"/><path d="M4 4.5V21M8 6h8M8 10h8"/></svg>`,
+  eye:`<svg class="iconSvg" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.2-6 9.5-6 9.5 6 9.5 6-3.2 6-9.5 6-9.5-6-9.5-6z"/><circle cx="12" cy="12" r="2.5"/></svg>`
+};
+const EMOJI_ICON_MAP = {
+  "📅":"calendar","🔁":"revision","📝":"notes","📊":"marks","🎯":"chart",
+  "📓":"book","💾":"folder","📘":"book","🪑":"seat","🎉":"check",
+  "🔄":"revision","📌":"pin","✏️":"edit","🗑️":"trash","🗑":"trash",
+  "📥":"download","🖼️":"image","🖼":"image","📕":"pdf","📄":"file",
+  "📂":"folder","⚡":"bolt","❌":"close","⏳":"timer","➕":"plus",
+  "⬅️":"back","➡️":"right","←":"back","→":"right"
+};
+ICONS.seat = `<svg class="iconSvg" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5h10v7H6z"/><path d="M8 12v5M16 12v5M5 20h14M8 17h8"/></svg>`;
+ICONS.check = `<svg class="iconSvg" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12 2.6 2.7L16.5 9"/></svg>`;
+ICONS.download = `<svg class="iconSvg" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v10M8 10l4 4 4-4M5 19h14"/></svg>`;
+ICONS.image = `<svg class="iconSvg" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8" cy="9" r="1.5"/><path d="m5 17 5-5 3 3 2-2 4 4"/></svg>`;
+ICONS.pdf = `<svg class="iconSvg" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h10l4 4v14H5z"/><path d="M15 3v5h4"/><path d="M8 16h8M8 12h5"/></svg>`;
+ICONS.file = `<svg class="iconSvg" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v5h4M9 12h6M9 16h6"/></svg>`;
+ICONS.bolt = `<svg class="iconSvg" viewBox="0 0 24 24" aria-hidden="true"><path d="m13 2-8 12h6l-1 8 8-12h-6z"/></svg>`;
+// Initialize UI only after custom SVG icons are defined.
+notebook();
+home();
+renderFiles();
+document.body.classList.add("homeLocked");
+
+function sanitizeEmojiUI(root=document.body){
+  if(!root) return;
+  const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
+  const nodes=[];
+  while(walker.nextNode()){
+    const n=walker.currentNode;
+    if(!n.nodeValue || !/[📅🔁📝📊🎯📓💾📘🪑🎉🔄📌✏️🗑️🗑📥🖼️🖼📕📄📂⚡❌⏳➕⬅️➡️←→]/u.test(n.nodeValue)) continue;
+    const p=n.parentElement;
+    if(!p || p.closest("script,style,textarea,input")) continue;
+    nodes.push(n);
+  }
+  for(const n of nodes){
+    const frag=document.createDocumentFragment();
+    let text=n.nodeValue;
+    const re=/([📅🔁📝📊🎯📓💾📘🪑🎉🔄📌✏️🗑️🗑📥🖼️🖼📕📄📂⚡❌⏳➕⬅️➡️←→])/gu;
+    let last=0,m;
+    while((m=re.exec(text))){
+      if(m.index>last) frag.append(document.createTextNode(text.slice(last,m.index)));
+      const key=m[1], iconName=EMOJI_ICON_MAP[key];
+      if(iconName && ICONS[iconName]){
+        const span=document.createElement("span");
+        span.className="svgEmoji";
+        span.innerHTML=ICONS[iconName];
+        frag.append(span);
+      }else{
+        frag.append(document.createTextNode(key));
+      }
+      last=re.lastIndex;
+    }
+    if(last<text.length) frag.append(document.createTextNode(text.slice(last)));
+    n.replaceWith(frag);
+  }
+}
+
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded",()=>{
+  sanitizeEmojiUI(document.body);
+  const emojiObserver=new MutationObserver(()=>sanitizeEmojiUI(document.body));
+  emojiObserver.observe(document.body,{childList:true,subtree:true});
+});
+</script>
+</body>
+</html>
